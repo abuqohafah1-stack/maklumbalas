@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Maklum Balas · Sofwah Arabic Grill</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0B0B0D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: one-column app shell sized to the phone screen. The header carries the brand and an
+   8-point khatam star that fills as progress; one question per screen; action bar in the thumb zone.
+   Brand colour ratio: 70% premium dark, 15% deep Arabic red, 10% golden orange, 5% luxury gold.
+   Single committed dark theme (Sofwah Premium Dark Experience). */
+:root {
+  --bg: #0B0B0D;
+  --surface: #151517;
+  --surface-2: #201D1C;
+  --line: #2F2A26;
+  --text: #FFFFFF;
+  --text-2: #D1D5DB;
+  --muted: #9CA3AF;
+  --red: #730D04;
+  --orange: #FF9A06;
+  --gold: #FFDA7C;
+  --gold-soft: rgba(255, 218, 124, 0.32);
+  --red-soft: rgba(115, 13, 4, 0.6);
+  --orange-soft: rgba(255, 154, 6, 0.14);
+  --scrim: rgba(5, 5, 6, 0.74);
+  --on-accent: #1A0B00;
+  --danger: #FCA5A5;
+  --lv1: #A3190A;
+  --lv2: #C2410C;
+  --lv3: #E2862A;
+  --lv4: #FF9A06;
+  --lv5: #FFDA7C;
+  --ink-light: #FFFFFF;
+  --ink-dark: #1A0B00;
+
+  --font-display: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-body: "Tajawal", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-arabic: "Tajawal", "Geeza Pro", "Noto Naskh Arabic", "Segoe UI", Tahoma, serif;
+
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.1875rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.875rem;
+
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-pill: 999px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: dark;
+}
+
+html { height: 100%; box-sizing: border-box; background: var(--bg); }
+*, *::before, *::after { box-sizing: inherit; }
+[hidden] { display: none !important; }
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+h1:focus, h2:focus { outline: none; }
+
+/* ---------- Background: ember glow + faint khatam lattice ---------- */
+.bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: var(--bg); }
+.lattice {
+  position: absolute; inset: 0; background: var(--gold); opacity: .045;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E");
+  -webkit-mask-size: 54px 54px; mask-size: 54px 54px;
+}
+.glow { position: absolute; border-radius: 50%; }
+.g1 { width: 120vmax; height: 120vmax; left: -60vmax; bottom: -70vmax; background: radial-gradient(closest-side, var(--red-soft), transparent); animation: drift 16s ease-in-out infinite alternate; }
+.g2 { width: 80vmax; height: 80vmax; right: -45vmax; top: -48vmax; background: radial-gradient(closest-side, var(--orange-soft), transparent); animation: drift 21s ease-in-out infinite alternate-reverse; }
+@keyframes drift { to { transform: translate3d(5vmax, -4vmax, 0) scale(1.06); } }
+
+/* ---------- App shell ---------- */
+.app {
+  position: relative; z-index: 1;
+  height: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px 6px; }
+.brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.mark { width: 36px; height: 36px; flex: none; overflow: visible; }
+.mark path { fill: none; stroke-width: 6; stroke-linejoin: round; }
+.mark-track { stroke: var(--line); }
+.mark-fill { stroke: var(--gold); stroke-dasharray: 100; stroke-dashoffset: 100; transition: stroke-dashoffset .7s var(--ease); filter: drop-shadow(0 0 5px var(--gold-soft)); }
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.brand-name { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-sm); letter-spacing: .01em; }
+.brand-branch { display: flex; align-items: center; gap: 5px; font-size: var(--fs-sm); color: var(--muted); }
+.brand-branch svg { width: 13px; height: 13px; flex: none; color: var(--orange); }
+
+.lang { display: inline-flex; flex: none; padding: 3px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line); }
+.lang button {
+  appearance: none; border: 0; background: transparent; color: var(--muted); cursor: pointer;
+  font: 600 var(--fs-xs)/1 var(--font-display); letter-spacing: .04em;
+  min-height: 34px; padding: 0 12px; border-radius: var(--r-pill);
+  transition: background .2s, color .2s;
+}
+.lang button[aria-pressed="true"] { background: var(--surface-2); color: var(--gold); }
+
+.demo-note { margin: 4px 0 0; padding: 7px 12px; border: 1px dashed var(--line); border-radius: var(--r-sm); font-size: var(--fs-xs); color: var(--muted); text-align: center; }
+
+main {
+  flex: 1; min-height: 0;
+  overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-block: 18px 20px;
+  scrollbar-width: none;
+}
+main::-webkit-scrollbar { display: none; }
+
+.step { display: flex; flex-direction: column; gap: 18px; }
+.step.enter-fwd { animation: inFwd .42s var(--ease); }
+.step.enter-back { animation: inBack .42s var(--ease); }
+@keyframes inFwd { from { opacity: 0; transform: translateX(28px); } }
+@keyframes inBack { from { opacity: 0; transform: translateX(-28px); } }
+
+/* ---------- Type ---------- */
+.count { margin: 0; font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 500; color: var(--gold); font-variant-numeric: tabular-nums; }
+.h-q { margin: -8px 0 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xl); line-height: 1.28; letter-spacing: -0.01em; text-wrap: balance; }
+.h-display { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-2xl); line-height: 1.16; letter-spacing: -0.02em; text-wrap: balance; }
+.lead { margin: 0; color: var(--text-2); font-size: var(--fs-md); line-height: 1.6; max-width: 36ch; }
+.hint { margin: -8px 0 0; color: var(--muted); font-size: var(--fs-sm); }
+.meta { margin: 0; color: var(--muted); font-size: var(--fs-sm); }
+.q-label { margin: 0; font-size: var(--fs-sm); font-weight: 700; color: var(--text); }
+.sub-q { margin-top: 6px; padding-top: 20px; border-top: 1px solid var(--line); }
+.contact-fields { display: flex; flex-direction: column; gap: 18px; }
+.linkish {
+  appearance: none; align-self: flex-start; background: none; border: 0; padding: 4px 0; cursor: pointer;
+  color: var(--muted); font: inherit; font-size: var(--fs-sm);
+  text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px;
+}
+.linkish:hover { color: var(--text-2); }
+
+/* ---------- Welcome ---------- */
+.hero { position: relative; width: min(62vw, 228px); max-width: 100%; aspect-ratio: 1; margin: 2px auto 4px; display: grid; place-items: center; transition: width .3s var(--ease); }
+.has-picker .hero { width: min(40vw, 150px); }
+.hero svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hf-a { stop-color: var(--red); stop-opacity: .75; }
+.hf-b { stop-color: var(--red); stop-opacity: 0; }
+.hs-base { fill: url(#heroFill); stroke: var(--gold-soft); stroke-width: 1.1; stroke-linejoin: round; }
+.hs-inner { fill: none; stroke: var(--gold-soft); stroke-width: 1.1; stroke-linejoin: round; opacity: .55; }
+.hs-ember { fill: none; stroke: var(--gold); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 9 91; animation: ember 7s linear infinite; filter: drop-shadow(0 0 3px var(--gold)); }
+@keyframes ember { to { stroke-dashoffset: -100; } }
+.hero-ar { position: relative; font-family: var(--font-arabic); font-weight: 800; font-size: clamp(1.45rem, 7.2vw, 1.95rem); line-height: 1.2; color: var(--gold); text-shadow: 0 0 22px var(--red-soft); }
+.has-picker .hero-ar { font-size: 1.15rem; }
+.branch-pick { display: flex; flex-direction: column; gap: 12px; }
+
+/* ---------- Chips ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  appearance: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px; padding: 10px 15px;
+  border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: var(--surface); color: var(--text-2);
+  font: 500 var(--fs-sm)/1.2 var(--font-body); text-align: left;
+  transition: background .2s, border-color .2s, color .2s, transform .15s;
+}
+.chip:active { transform: scale(.97); }
+.chip .tick { display: none; width: 15px; height: 15px; flex: none; color: var(--orange); }
+.chip[aria-pressed="true"], .chip[aria-checked="true"] { border-color: var(--orange); background: var(--orange-soft); color: var(--text); }
+.chip[aria-pressed="true"] .tick, .chip[aria-checked="true"] .tick { display: block; }
+
+/* ---------- Overall: faces ---------- */
+.faces { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+.face {
+  appearance: none; cursor: pointer; justify-self: center;
+  width: 100%; max-width: 68px; aspect-ratio: 1; padding: 0;
+  display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: var(--surface); color: var(--muted);
+  transition: transform .28s var(--ease), background .25s, color .25s, border-color .25s, box-shadow .25s, opacity .25s;
+}
+.face svg { width: 76%; height: 76%; }
+.face svg path, .face svg circle { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.face svg .dot { fill: currentColor; stroke: none; }
+.face[aria-checked="true"] { transform: scale(1.14); border-color: transparent; background: var(--lv); color: var(--lv-ink); box-shadow: 0 0 0 4px var(--bg), 0 0 30px var(--lv); }
+.faces.has-pick .face:not([aria-checked="true"]) { opacity: .42; }
+.face-label { margin: 6px 0 0; min-height: 1.6em; text-align: center; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-lg); color: var(--muted); transition: color .2s; }
+.face-label.on { color: var(--text); }
+.lv1 { --lv: var(--lv1); --lv-ink: var(--ink-light); }
+.lv2 { --lv: var(--lv2); --lv-ink: var(--ink-light); }
+.lv3 { --lv: var(--lv3); --lv-ink: var(--ink-dark); }
+.lv4 { --lv: var(--lv4); --lv-ink: var(--ink-dark); }
+.lv5 { --lv: var(--lv5); --lv-ink: var(--ink-dark); }
+
+/* ---------- Aspects: khatam-star ratings ---------- */
+.aspects { display: flex; flex-direction: column; }
+.aspect { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+.aspect:first-child { border-top: 1px solid var(--line); }
+.aspect-text { min-width: 0; }
+.aspect-name { display: block; font-weight: 700; font-size: var(--fs-md); line-height: 1.25; color: var(--text); }
+.aspect-hint { display: block; margin-top: 2px; font-size: var(--fs-xs); line-height: 1.3; color: var(--muted); }
+.stars { display: flex; }
+.star { appearance: none; border: 0; background: none; cursor: pointer; width: 38px; height: 42px; padding: 6px 4px; }
+.star svg { width: 100%; height: 100%; overflow: visible; }
+.star path { fill: transparent; stroke: var(--muted); stroke-width: 5; stroke-linejoin: round; transition: fill .2s, stroke .2s; }
+.star.on path { fill: var(--gold); stroke: var(--gold); }
+.star.pop svg { animation: pop .38s var(--ease); }
+@keyframes pop { 45% { transform: scale(1.32) rotate(22.5deg); } }
+
+/* ---------- NPS ---------- */
+.nps { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; margin-top: 4px; }
+.nps button {
+  appearance: none; cursor: pointer; height: 52px; padding: 0;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface); color: var(--text-2);
+  font: 600 var(--fs-sm)/1 var(--font-display); font-variant-numeric: tabular-nums;
+  transition: transform .25s var(--ease), background .2s, color .2s, box-shadow .25s, border-color .2s;
+}
+.nps button[aria-checked="true"] { transform: translateY(-5px); border-color: transparent; background: var(--lv); color: var(--lv-ink); box-shadow: 0 10px 24px -8px var(--lv); }
+.nps-scale { height: 3px; margin-top: -10px; border-radius: 3px; background: linear-gradient(90deg, var(--lv1), var(--lv3), var(--lv5)); opacity: .75; }
+.nps-ends { display: flex; justify-content: space-between; gap: 12px; margin-top: -10px; font-size: var(--fs-xs); color: var(--muted); }
+
+/* ---------- Fields ---------- */
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field-label { font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); }
+.field input, .field textarea {
+  width: 100%; appearance: none; outline: none;
+  padding: 13px 14px; border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--text);
+  font: 400 var(--fs-md)/1.45 var(--font-body);
+  transition: border-color .2s, box-shadow .2s;
+}
+.field textarea { min-height: 92px; resize: vertical; }
+.field input:focus, .field textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-soft); }
+.field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: .85; }
+.field-error, .form-error { margin: -8px 0 0; font-size: var(--fs-sm); color: var(--danger); }
+.form-error { margin: 0; }
+.group { display: flex; flex-direction: column; min-width: 0; margin: 0; padding: 0; border: 0; }
+.group legend { padding: 0; margin-bottom: 10px; font-size: var(--fs-sm); font-weight: 700; color: var(--text); }
+.consent { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: var(--fs-sm); color: var(--text-2); }
+.consent input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--orange); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Photo ---------- */
+.photo { display: flex; flex-direction: column; gap: 10px; }
+.photo-drop { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px dashed var(--gold-soft); border-radius: var(--r-md); cursor: pointer; color: var(--text-2); transition: background .2s, border-color .2s; }
+.photo-drop:hover { background: var(--surface); }
+.photo input:focus-visible + .photo-drop { outline: 2px solid var(--gold); outline-offset: 3px; }
+.photo-drop svg { width: 28px; height: 28px; flex: none; color: var(--gold); }
+.photo-drop strong { display: block; font-weight: 700; color: var(--text); }
+.photo-drop small { display: block; font-size: var(--fs-xs); color: var(--muted); line-height: 1.35; }
+.photo-preview { display: flex; align-items: center; gap: 14px; }
+.photo-preview img { width: 76px; height: 76px; max-width: 100%; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--line); }
+
+/* ---------- Done ---------- */
+#s9 { align-items: center; text-align: center; padding-top: 6px; }
+#s9 .lead { margin-inline: auto; }
+.done-star { width: 128px; height: 128px; margin-top: 6px; }
+.done-star svg { width: 100%; height: 100%; overflow: visible; }
+.done-star .ds { fill: var(--gold); stroke: var(--gold); stroke-width: 2; stroke-linejoin: round; filter: drop-shadow(0 0 24px var(--gold-soft)); }
+.done-star .check { fill: none; stroke: var(--on-accent); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; }
+#s9.enter-fwd .done-star svg { animation: starIn .7s var(--ease); }
+#s9.enter-fwd .done-star .check { animation: draw .55s .3s var(--ease) backwards; }
+@keyframes starIn { from { transform: scale(.4) rotate(-45deg); } }
+@keyframes draw { from { stroke-dashoffset: 60; } }
+.done-ar { margin: -2px 0 0; font-family: var(--font-arabic); font-weight: 800; font-size: 1.6rem; line-height: 1.3; color: var(--gold); }
+.ticket {
+  position: relative; width: 100%; max-width: 340px; overflow: hidden;
+  display: flex; flex-direction: column; gap: 4px; padding: 18px 26px;
+  border: 1px solid var(--gold-soft); border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--surface-2), var(--surface));
+}
+.ticket::before, .ticket::after { content: ""; position: absolute; top: 50%; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 1px solid var(--gold-soft); transform: translateY(-50%); }
+.ticket::before { left: -11px; }
+.ticket::after { right: -11px; }
+.ticket-label { font-size: var(--fs-xs); color: var(--muted); }
+.ticket-code { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: .12em; color: var(--gold); font-variant-numeric: tabular-nums; }
+.ticket-offer { font-size: var(--fs-sm); color: var(--text-2); }
+.site-link { color: var(--text-2); font-size: var(--fs-sm); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; }
+.sparks { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+
+/* ---------- Action bar ---------- */
+.bar { display: flex; gap: 10px; padding-block: 10px 16px; }
+.btn-back {
+  appearance: none; cursor: pointer; flex: none;
+  width: 54px; height: 54px; padding: 0;
+  display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: var(--surface); color: var(--text);
+}
+.btn-back svg { width: 20px; height: 20px; }
+.btn-primary {
+  appearance: none; cursor: pointer; flex: 1;
+  min-height: 54px; padding: 0 22px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: var(--r-pill);
+  background: var(--orange); color: var(--on-accent);
+  font: 600 var(--fs-md)/1.2 var(--font-display); letter-spacing: .01em;
+  box-shadow: 0 12px 30px -12px var(--orange);
+  transition: transform .15s, background .2s, color .2s, box-shadow .2s;
+}
+.btn-primary:active:not(:disabled) { transform: scale(.98); }
+.btn-primary:disabled { cursor: not-allowed; background: var(--surface-2); color: var(--muted); box-shadow: none; }
+.btn-primary .spin { display: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin .8s linear infinite; }
+.btn-primary.busy .spin { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Privacy modal ---------- */
+.modal {
+  position: fixed; inset: 0; z-index: 40;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: var(--scrim);
+  padding-top: calc(16px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.modal-card { width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 22px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.modal-card h3 { margin: 0; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 600; }
+.modal-card p { margin: 0; font-size: var(--fs-sm); line-height: 1.6; color: var(--text-2); }
+.modal-card .btn-primary { flex: none; margin-top: 6px; }
+
+@media (max-width: 360px) {
+  .mark { width: 30px; height: 30px; }
+  .brand { gap: 9px; }
+  .brand-name { font-size: var(--fs-xs); }
+  .aspect { grid-template-columns: 1fr; gap: 4px; }
+  .stars { justify-content: space-between; }
+  .h-display { font-size: 1.6rem; }
+  .nps button { height: 46px; font-size: var(--fs-xs); }
+}
+@media (min-height: 780px) { main { padding-block: 28px 24px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .hs-ember { display: none; }
+}
+</style>
+
+<div class="bg" aria-hidden="true"><div class="lattice"></div><div class="glow g1"></div><div class="glow g2"></div></div>
+
+<form class="app" id="app" novalidate autocomplete="off">
+  <header class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="mark-track" d="M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z"/>
+        <path class="mark-fill" id="markFill" pathLength="100" d="M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">Sofwah Arabic Grill</span>
+        <span class="brand-branch" id="brandBranch" hidden>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-4.6 5-8.5a5 5 0 0 0-10 0C3 10.4 8 15 8 15z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="6.5" r="1.8" fill="currentColor"/></svg>
+          <span id="brandBranchName"></span>
+        </span>
+      </div>
+    </div>
+    <div class="lang" role="group" id="langGroup" aria-label="Bahasa / Language">
+      <button type="button" id="langBm" aria-pressed="true">BM</button>
+      <button type="button" id="langEn" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <p class="demo-note" id="demoNote" data-i18n="demoNote" hidden></p>
+
+  <main id="main">
+    <!-- 0 · Welcome -->
+    <section class="step" id="s0" aria-labelledby="welcomeTitle">
+      <div class="hero" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <radialGradient id="heroFill" cx="50%" cy="50%" r="50%">
+              <stop offset="0" class="hf-a"/>
+              <stop offset="1" class="hf-b"/>
+            </radialGradient>
+          </defs>
+          <path class="hs-base" d="M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z"/>
+          <path class="hs-inner" transform="translate(50 50) rotate(22.5) scale(.6) translate(-50 -50)" d="M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z"/>
+          <path class="hs-ember" pathLength="100" d="M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z"/>
+        </svg>
+        <span class="hero-ar" lang="ar" dir="rtl">أهلاً وسهلاً</span>
+      </div>
+      <h1 class="h-display" id="welcomeTitle">Kongsi pengalaman anda di Sofwah</h1>
+      <p class="lead" data-i18n="welcomeLead"></p>
+      <div class="branch-pick" id="branchPick" hidden>
+        <p class="q-label" id="pickLabel" data-i18n="pickBranch"></p>
+        <div class="chips" id="branchChips" aria-labelledby="pickLabel"></div>
+      </div>
+      <p class="meta" data-i18n="welcomeMeta"></p>
+      <button type="button" class="linkish js-privacy" data-i18n="privacyLink"></button>
+    </section>
+
+    <!-- 1 · Overall -->
+    <section class="step" id="s1" hidden aria-labelledby="q1">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q1" data-i18n="q1"></h2>
+      <div class="faces" id="faces" role="radiogroup" aria-labelledby="q1"></div>
+      <p class="face-label" id="faceLabel" aria-live="polite"></p>
+    </section>
+
+    <!-- 2 · SALWA aspects -->
+    <section class="step" id="s2" hidden aria-labelledby="q2">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q2" data-i18n="q2"></h2>
+      <p class="hint" data-i18n="q2hint"></p>
+      <div class="aspects" id="aspects"></div>
+    </section>
+
+    <!-- 3 · Loyalty: revisit + NPS -->
+    <section class="step" id="s3" hidden aria-labelledby="q3">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q3" data-i18n="q3"></h2>
+      <div class="chips" id="revisitChips" aria-labelledby="q3"></div>
+      <p class="q-label sub-q" id="q3b" data-i18n="q3b"></p>
+      <div class="nps" id="nps" role="radiogroup" aria-labelledby="q3b"></div>
+      <div class="nps-scale" aria-hidden="true"></div>
+      <div class="nps-ends"><span data-i18n="npsLow"></span><span data-i18n="npsHigh"></span></div>
+    </section>
+
+    <!-- 4 · What attracts (SALWA) -->
+    <section class="step" id="s4" hidden aria-labelledby="q4">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q4" data-i18n="q4"></h2>
+      <p class="hint" data-i18n="multi"></p>
+      <div class="chips" id="attractChips" aria-labelledby="q4"></div>
+      <label class="field" for="attractOther" id="attractOtherRow" hidden>
+        <span class="field-label" data-i18n="attractOtherLabel"></span>
+        <input id="attractOther" type="text" maxlength="80" autocomplete="off">
+      </label>
+    </section>
+
+    <!-- 5 · What to improve + comment + photo -->
+    <section class="step" id="s5" hidden aria-labelledby="q5">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q5" data-i18n="q5"></h2>
+      <p class="hint" id="q5hint"></p>
+      <div class="chips" id="improveChips" aria-labelledby="q5"></div>
+      <label class="field" for="comment">
+        <span class="field-label" data-i18n="commentLabel"></span>
+        <textarea id="comment" rows="3" maxlength="1000"></textarea>
+      </label>
+      <div class="photo">
+        <input type="file" id="photoInput" accept="image/*" class="sr-only">
+        <label for="photoInput" class="photo-drop" id="photoDrop">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.7l1.3-2h5l1.3 2h1.7A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span><strong data-i18n="photoAdd"></strong><small data-i18n="photoSub"></small></span>
+        </label>
+        <div class="photo-preview" id="photoPreview" hidden>
+          <img id="photoImg" alt="">
+          <button type="button" class="linkish" id="photoRemove" data-i18n="photoRemove"></button>
+        </div>
+        <p class="field-error" id="photoError" role="alert" hidden></p>
+      </div>
+    </section>
+
+    <!-- 6 · About you -->
+    <section class="step" id="s6" hidden aria-labelledby="q6">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q6" data-i18n="q6"></h2>
+      <fieldset class="group"><legend data-i18n="age"></legend><div class="chips" id="ageChips"></div></fieldset>
+      <fieldset class="group"><legend data-i18n="firstVisit"></legend><div class="chips" id="firstChips"></div></fieldset>
+      <fieldset class="group" id="freqGroup" hidden><legend data-i18n="freq"></legend><div class="chips" id="freqChips"></div></fieldset>
+      <fieldset class="group"><legend id="sourceLegend"></legend><div class="chips" id="sourceChips"></div></fieldset>
+    </section>
+
+    <!-- 7 · Today's visit -->
+    <section class="step" id="s7" hidden aria-labelledby="q7">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q7" data-i18n="q7"></h2>
+      <fieldset class="group"><legend data-i18n="visitType"></legend><div class="chips" id="visitChips"></div></fieldset>
+      <fieldset class="group"><legend data-i18n="companion"></legend><div class="chips" id="companionChips"></div></fieldset>
+      <label class="field" for="staff">
+        <span class="field-label" data-i18n="staffLabel"></span>
+        <input id="staff" type="text" maxlength="60" autocomplete="off" data-i18n-ph="staffPh">
+      </label>
+    </section>
+
+    <!-- 8 · Contact -->
+    <section class="step" id="s8" hidden aria-labelledby="q8title">
+      <p class="count" data-count></p>
+      <h2 class="h-q" id="q8title"></h2>
+      <p class="lead" id="q8lead"></p>
+      <div class="contact-fields" id="contactFields">
+        <label class="field" for="name">
+          <span class="field-label" data-i18n="nameLabel"></span>
+          <input id="name" type="text" maxlength="60" autocomplete="name">
+        </label>
+        <label class="field" for="phone">
+          <span class="field-label" data-i18n="phoneLabel"></span>
+          <input id="phone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="012-345 6789">
+        </label>
+        <p class="field-error" id="phoneError" role="alert" hidden></p>
+        <label class="consent" id="consentRow" for="consent" hidden>
+          <input type="checkbox" id="consent">
+          <span data-i18n="consent"></span>
+        </label>
+      </div>
+      <div class="sr-only" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <button type="button" class="linkish js-privacy" data-i18n="privacyLink"></button>
+      <p class="form-error" id="sendError" role="alert" hidden></p>
+    </section>
+
+    <!-- 9 · Thank you -->
+    <section class="step" id="s9" hidden aria-labelledby="doneTitle">
+      <div class="done-star" id="doneStar" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <path class="ds" d="M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z"/>
+          <path class="check" pathLength="60" d="M33 51 L45 63 L68 38"/>
+        </svg>
+      </div>
+      <p class="done-ar" lang="ar" dir="rtl">جزاك الله خيراً</p>
+      <h2 class="h-display" id="doneTitle"></h2>
+      <p class="lead" id="doneLead"></p>
+      <div class="ticket" id="ticket" hidden>
+        <span class="ticket-label" data-i18n="ticketLabel"></span>
+        <span class="ticket-code" id="ticketCode"></span>
+        <span class="ticket-offer" id="ticketOffer"></span>
+      </div>
+      <p class="meta" id="demoDone" data-i18n="demoDone" hidden></p>
+      <a class="site-link" href="https://sofwaharabicgrill.com" target="_blank" rel="noopener">sofwaharabicgrill.com</a>
+    </section>
+  </main>
+
+  <nav class="bar" id="bar">
+    <button type="button" class="btn-back" id="backBtn" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="btn-primary" id="nextBtn"><span class="spin" aria-hidden="true"></span><span id="nextLabel"></span></button>
+  </nav>
+</form>
+
+<div class="modal" id="privacy" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" hidden>
+  <div class="modal-card">
+    <h3 id="privacyTitle" data-i18n="privacyTitle"></h3>
+    <p data-i18n="privacy1"></p>
+    <p data-i18n="privacy2"></p>
+    <p data-i18n="privacy3"></p>
+    <button type="button" class="btn-primary" id="privacyClose" data-i18n="close"></button>
+  </div>
+</div>
+
+<canvas class="sparks" id="sparks" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ================= TETAPAN / SETTINGS =================
+     ENDPOINT: isi URL Web App Apps Script HANYA jika borang ini diletak di luar Apps Script
+     (contoh: di laman web Sofwah). Biarkan kosong bila borang dibuka terus dari URL Web App. */
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbx5OHOONi8osR00bjLMWe-RVTtcua_Ygj4H87F3GHj7RLndUYZt-6dp6ZM8hgn7IiY/exec";
+
+  var BRANCHES = [
+    { slug: "gurun", name: "Gurun" },
+    { slug: "kuala-nerang", name: "Kuala Nerang" },
+    { slug: "sungai-petani", name: "Sungai Petani" },
+    { slug: "alor-setar", name: "Alor Setar" },
+    { slug: "aman-central", name: "Aman Central" },
+    { slug: "jitra", name: "Jitra" }
+  ];
+
+  var STAR = "M50 7.57 L62.43 20 L80 20 L80 37.57 L92.43 50 L80 62.43 L80 80 L62.43 80 L50 92.43 L37.57 80 L20 80 L20 62.43 L7.57 50 L20 37.57 L20 20 L37.57 20 Z";
+  var TICK = '<svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var TOTAL_Q = 8;
+  var DONE = 9;
+
+  /* Aspek ikut SALWA: S = layanan + kepantasan, A = keaslian, L = suasana, W = rasa, A = nilai */
+  var ASPECTS = [
+    { key: "rasa", bm: ["Rasa makanan", "Sedap dan memuaskan"], en: ["Taste", "Delicious and satisfying"] },
+    { key: "keaslian", bm: ["Keaslian Arab", "Bahan asli dan rasa Arab sebenar"], en: ["Arabic authenticity", "True Arabic ingredients and flavour"] },
+    { key: "layanan", bm: ["Layanan staf", "Mesra dan profesional"], en: ["Staff service", "Friendly and professional"] },
+    { key: "kepantasan", bm: ["Kepantasan", "Hidangan sampai tepat masa"], en: ["Speed", "Food arrived on time"] },
+    { key: "suasana", bm: ["Suasana & kebersihan", "Selesa, bersih dan mesra keluarga"], en: ["Ambience & cleanliness", "Comfortable, clean and family-friendly"] },
+    { key: "nilai", bm: ["Nilai berbaloi", "Harga mampu milik dan setimpal"], en: ["Value for money", "Affordable and worth it"] }
+  ];
+
+  /* Nilai (v) ialah kosa kata kanonik yang sama dengan data borang kertas, supaya dashboard boleh gabung. */
+  var REVISIT = [
+    { v: "Ya", bm: "Ya, pasti", en: "Yes, definitely" },
+    { v: "Mungkin", bm: "Mungkin", en: "Maybe" },
+    { v: "Tidak", bm: "Tidak", en: "No" }
+  ];
+  var ATTRACT = [
+    { v: "Layanan mesra & profesional", bm: "Layanan mesra & profesional", en: "Friendly, professional service" },
+    { v: "Bahan asli & rasa Arab", bm: "Bahan asli & rasa Arab sebenar", en: "Authentic ingredients & Arabic taste" },
+    { v: "Suasana meriah", bm: "Suasana meriah & menyeronokkan", en: "Lively, enjoyable atmosphere" },
+    { v: "Rasa sedap & memuaskan", bm: "Rasa sedap & memuaskan", en: "Delicious, satisfying food" },
+    { v: "Harga mampu milik", bm: "Harga mampu milik untuk semua", en: "Affordable for everyone" },
+    { v: "Lain-lain", bm: "Lain-lain", en: "Something else" }
+  ];
+  var NONE_IMPROVE = "Tiada, semuanya terbaik";
+  var IMPROVE = [
+    { v: NONE_IMPROVE, bm: "Tiada, semuanya terbaik", en: "Nothing, everything was great" },
+    { v: "Makanan (rasa, saiz, kualiti)", bm: "Makanan (rasa, saiz, kualiti)", en: "Food (taste, portion, quality)" },
+    { v: "Sikap staf", bm: "Sikap staf", en: "Staff attitude" },
+    { v: "Servis & masa menunggu", bm: "Servis & masa menunggu", en: "Service & waiting time" },
+    { v: "Suasana & dekor", bm: "Suasana & dekor", en: "Ambience & decor" },
+    { v: "Harga & nilai", bm: "Harga & nilai", en: "Price & value" },
+    { v: "Sistem pesanan", bm: "Sistem pesanan", en: "Ordering system" },
+    { v: "Komunikasi & maklumat", bm: "Komunikasi & maklumat", en: "Communication & information" },
+    { v: "Kebersihan", bm: "Kebersihan", en: "Cleanliness" },
+    { v: "Pembungkusan", bm: "Pembungkusan", en: "Packaging" }
+  ];
+  var AGE = [
+    { v: "Bawah 18", bm: "Bawah 18", en: "Under 18" },
+    { v: "18-24", bm: "18–24", en: "18–24" },
+    { v: "25-34", bm: "25–34", en: "25–34" },
+    { v: "35-44", bm: "35–44", en: "35–44" },
+    { v: "45 ke atas", bm: "45 ke atas", en: "45 and above" }
+  ];
+  var FIRST = [
+    { v: "Ya", bm: "Ya, pertama kali", en: "Yes, first time" },
+    { v: "Tidak", bm: "Tidak, pernah datang", en: "No, I've been before" }
+  ];
+  var FREQ = [
+    { v: "Seminggu sekali atau lebih", bm: "Seminggu sekali atau lebih", en: "Weekly or more" },
+    { v: "2-3 kali sebulan", bm: "2–3 kali sebulan", en: "2–3 times a month" },
+    { v: "Sebulan sekali", bm: "Sebulan sekali", en: "Once a month" },
+    { v: "Jarang-jarang", bm: "Jarang-jarang", en: "Rarely" }
+  ];
+  var SOURCE = [
+    { v: "Nampak kedai", bm: "Nampak kedai", en: "Saw the restaurant" },
+    { v: "Keluarga / rakan", bm: "Keluarga / rakan", en: "Family or friends" },
+    { v: "TikTok", en: "TikTok" },
+    { v: "Facebook", en: "Facebook" },
+    { v: "Instagram", en: "Instagram" },
+    { v: "Google", bm: "Google / Maps", en: "Google / Maps" },
+    { v: "Review influencer", bm: "Review influencer", en: "Influencer review" },
+    { v: "Iklan / flyers", bm: "Iklan / flyers", en: "Ads / flyers" },
+    { v: "FoodPanda", en: "FoodPanda" },
+    { v: "GrabFood", en: "GrabFood" },
+    { v: "Misi", en: "Misi" },
+    { v: "Lain-lain", bm: "Lain-lain", en: "Other" }
+  ];
+  var VISIT = [
+    { v: "Makan di sini", en: "Dined in" },
+    { v: "Bungkus", en: "Takeaway" },
+    { v: "Delivery", en: "Delivery" }
+  ];
+  var COMPANION = [
+    { v: "Keluarga", en: "Family" },
+    { v: "Kawan", en: "Friends" },
+    { v: "Rakan sekerja", en: "Colleagues" },
+    { v: "Pasangan", en: "Partner" },
+    { v: "Seorang diri", en: "Just me" }
+  ];
+
+  var T = {
+    bm: {
+      welcomeTitle: "Kongsi pengalaman anda di Sofwah {b}",
+      welcomeTitleNoBranch: "Kongsi pengalaman anda di Sofwah",
+      welcomeLead: "Pendapat anda membantu kami menyajikan momen yang lebih bermakna untuk setiap keluarga.",
+      welcomeMeta: "Kurang 2 minit. Kebanyakan soalan hanya perlu diketik.",
+      pickBranch: "Anda di cawangan mana?",
+      start: "Mula",
+      startNeedBranch: "Pilih cawangan dahulu",
+      count: "Langkah {n} daripada 8",
+      q1: "Secara keseluruhan, bagaimana pengalaman anda hari ini?",
+      faces: ["Sangat kecewa", "Kurang puas", "Biasa", "Puas hati", "Luar biasa"],
+      faceIdle: "Ketik wajah yang paling tepat.",
+      q2: "Nilaikan setiap aspek kunjungan anda",
+      q2hint: "Ketik bintang: 1 paling rendah, 5 paling tinggi.",
+      remaining: "Lagi {n} aspek untuk dinilai",
+      starLabel: "{v} daripada 5",
+      q3: "Adakah anda akan datang semula ke Sofwah?",
+      q3b: "Berapa besar kemungkinan anda mengesyorkan Sofwah kepada keluarga atau kawan?",
+      npsLow: "Tidak mungkin",
+      npsHigh: "Pasti sekali",
+      q4: "Apa yang paling menarik perhatian anda tentang Sofwah?",
+      multi: "Pilih semua yang berkenaan.",
+      attractOtherLabel: "Nyatakan (pilihan)",
+      q5: "Apa yang perlu kami tambah baik?",
+      q5hint: "Pilih semua yang berkenaan, atau pilih Tiada jika semuanya terbaik.",
+      q5hintLow: "Pilih perkara yang mengecewakan anda supaya kami boleh betulkan.",
+      commentLabel: "Komen atau cadangan lain (pilihan)",
+      commentPhLike: "Apa yang menjadikan kunjungan anda istimewa?",
+      commentPhImprove: "Apa yang berlaku, dan bila?",
+      photoAdd: "Tambah gambar",
+      photoSub: "Hidangan, resit atau apa sahaja yang anda mahu tunjukkan (pilihan).",
+      photoRemove: "Buang gambar",
+      photoError: "Gambar ini tidak dapat dibaca. Cuba gambar lain dalam format JPG atau PNG.",
+      q6: "Sedikit tentang anda",
+      age: "Umur anda",
+      firstVisit: "Ini kunjungan pertama anda ke Sofwah?",
+      freq: "Berapa kerap anda datang ke Sofwah?",
+      sourceReq: "Bagaimana anda mula kenal Sofwah? Pilih semua yang berkenaan.",
+      sourceOpt: "Bagaimana anda mula kenal Sofwah? (pilihan)",
+      q7: "Tentang kunjungan hari ini",
+      visitType: "Hari ini anda",
+      companion: "Datang bersama (pilihan)",
+      staffLabel: "Nama staf yang melayan anda (pilihan)",
+      staffPh: "Jika anda tahu",
+      needAnswers: "Lagi {n} soalan perlu dijawab",
+      needOne: "Pilih sekurang-kurangnya satu",
+      q8: "Boleh kami kenali anda?",
+      q8lead: "Pilihan sahaja. Kami hanya menggunakannya untuk menghubungi anda tentang maklum balas ini.",
+      q8low: "Kami mahu betulkan perkara ini.",
+      q8leadLow: "Tinggalkan nombor telefon anda supaya pengurus cawangan boleh menghubungi anda.",
+      q8minor: "Hampir siap!",
+      q8leadMinor: "Untuk pelanggan bawah 18 tahun, kami tidak meminta nama atau nombor telefon. Tekan Hantar untuk selesai.",
+      nameLabel: "Nama (pilihan)",
+      phoneLabel: "No. telefon (pilihan)",
+      phoneError: "Nombor telefon belum lengkap. Contoh: 012-345 6789",
+      consent: "Saya bersetuju Sofwah menghubungi saya tentang maklum balas ini.",
+      consentNeed: "Tandakan persetujuan di atas",
+      send: "Hantar maklum balas",
+      sending: "Menghantar…",
+      sendError: "Maklum balas belum dihantar. Semak sambungan internet anda, kemudian tekan Hantar sekali lagi.",
+      next: "Seterusnya",
+      back: "Kembali",
+      privacyLink: "Notis privasi",
+      privacyTitle: "Notis privasi",
+      privacy1: "Sofwah Arabiata (M) Sdn. Bhd. mengumpul maklum balas ini untuk menambah baik makanan dan layanan di cawangan kami.",
+      privacy2: "Nama dan nombor telefon adalah pilihan dan tidak diminta daripada pelanggan bawah 18 tahun. Maklumat ini hanya digunakan untuk menghubungi anda tentang maklum balas ini, tidak dijual dan tidak digunakan untuk tujuan lain, selaras dengan Akta Perlindungan Data Peribadi 2010.",
+      privacy3: "Untuk menyemak, membetulkan atau memadam data anda, hubungi mana-mana cawangan Sofwah.",
+      close: "Tutup",
+      doneTitle: "Terima kasih!",
+      doneTitleName: "Terima kasih, {name}!",
+      doneLead: "Maklum balas anda sudah sampai kepada pasukan Sofwah {b}.",
+      doneLeadLow: "Kami mohon maaf atas pengalaman anda hari ini. Pasukan Sofwah {b} sudah dimaklumkan dan akan menelitinya.",
+      ticketLabel: "Kod kunjungan seterusnya",
+      demoNote: "Preview sahaja. Jawapan tidak dihantar ke Google Sheet.",
+      demoDone: "Mod preview: tiada data dihantar."
+    },
+    en: {
+      welcomeTitle: "Tell us about your visit to Sofwah {b}",
+      welcomeTitleNoBranch: "Tell us about your visit to Sofwah",
+      welcomeLead: "Your thoughts help us serve more meaningful moments for every family.",
+      welcomeMeta: "Under 2 minutes. Most questions are a single tap.",
+      pickBranch: "Which branch are you at?",
+      start: "Start",
+      startNeedBranch: "Choose a branch first",
+      count: "Step {n} of 8",
+      q1: "Overall, how was your experience today?",
+      faces: ["Very disappointed", "Not satisfied", "Okay", "Satisfied", "Outstanding"],
+      faceIdle: "Tap the face that fits best.",
+      q2: "Rate each part of your visit",
+      q2hint: "Tap a star: 1 is lowest, 5 is highest.",
+      remaining: "{n} more to rate",
+      starLabel: "{v} of 5",
+      q3: "Will you come back to Sofwah?",
+      q3b: "How likely are you to recommend Sofwah to family or friends?",
+      npsLow: "Not likely",
+      npsHigh: "Definitely",
+      q4: "What attracts you most about Sofwah?",
+      multi: "Choose as many as apply.",
+      attractOtherLabel: "Tell us what (optional)",
+      q5: "What should we improve?",
+      q5hint: "Choose as many as apply, or choose Nothing if everything was great.",
+      q5hintLow: "Choose what disappointed you so we can put it right.",
+      commentLabel: "Other comments or suggestions (optional)",
+      commentPhLike: "What made your visit special?",
+      commentPhImprove: "What happened, and when?",
+      photoAdd: "Add a photo",
+      photoSub: "Your meal, receipt or anything you want to show us (optional).",
+      photoRemove: "Remove photo",
+      photoError: "This photo couldn't be read. Try another photo in JPG or PNG format.",
+      q6: "A little about you",
+      age: "Your age",
+      firstVisit: "Is this your first visit to Sofwah?",
+      freq: "How often do you come to Sofwah?",
+      sourceReq: "How did you first hear about Sofwah? Choose all that apply.",
+      sourceOpt: "How did you first hear about Sofwah? (optional)",
+      q7: "About today's visit",
+      visitType: "Today you",
+      companion: "Who came with you (optional)",
+      staffLabel: "Name of the staff who served you (optional)",
+      staffPh: "If you know it",
+      needAnswers: "{n} more to answer",
+      needOne: "Choose at least one",
+      q8: "Can we get to know you?",
+      q8lead: "Optional. We only use it to contact you about this feedback.",
+      q8low: "We want to put this right.",
+      q8leadLow: "Leave your phone number so the branch manager can contact you.",
+      q8minor: "Almost done!",
+      q8leadMinor: "We don't ask customers under 18 for a name or phone number. Tap Send to finish.",
+      nameLabel: "Name (optional)",
+      phoneLabel: "Phone number (optional)",
+      phoneError: "Phone number looks incomplete. Example: 012-345 6789",
+      consent: "I agree that Sofwah may contact me about this feedback.",
+      consentNeed: "Tick the consent box above",
+      send: "Send feedback",
+      sending: "Sending…",
+      sendError: "Your feedback wasn't sent. Check your internet connection, then tap Send again.",
+      next: "Next",
+      back: "Back",
+      privacyLink: "Privacy notice",
+      privacyTitle: "Privacy notice",
+      privacy1: "Sofwah Arabiata (M) Sdn. Bhd. collects this feedback to improve the food and service at our branches.",
+      privacy2: "Your name and phone number are optional and are never requested from customers under 18. They are used only to contact you about this feedback, are never sold and are not used for any other purpose, in line with Malaysia's Personal Data Protection Act 2010.",
+      privacy3: "To review, correct or delete your data, contact any Sofwah branch.",
+      close: "Close",
+      doneTitle: "Thank you!",
+      doneTitleName: "Thank you, {name}!",
+      doneLead: "Your feedback has reached the Sofwah {b} team.",
+      doneLeadLow: "We're sorry about your experience today. The Sofwah {b} team has been notified and will look into it.",
+      ticketLabel: "Your next-visit code",
+      demoNote: "Preview only. Answers are not sent to Google Sheets.",
+      demoDone: "Preview mode: no data was sent."
+    }
+  };
+
+  var FACES = [
+    '<path d="M13.5 15.5 L19.5 18"/><path d="M34.5 15.5 L28.5 18"/><circle class="dot" cx="18" cy="22.5" r="2.1"/><circle class="dot" cx="30" cy="22.5" r="2.1"/><path d="M15.5 34 Q24 26 32.5 34"/>',
+    '<circle class="dot" cx="18" cy="21" r="2.1"/><circle class="dot" cx="30" cy="21" r="2.1"/><path d="M16.5 32.5 Q24 28 31.5 32.5"/>',
+    '<circle class="dot" cx="18" cy="21" r="2.1"/><circle class="dot" cx="30" cy="21" r="2.1"/><path d="M16.5 31 L31.5 31"/>',
+    '<circle class="dot" cx="18" cy="21" r="2.1"/><circle class="dot" cx="30" cy="21" r="2.1"/><path d="M16 29 Q24 35.5 32 29"/>',
+    '<path d="M14.5 21.5 Q18 17.5 21.5 21.5"/><path d="M26.5 21.5 Q30 17.5 33.5 21.5"/><path d="M14.5 27.5 Q24 39 33.5 27.5 Z"/>'
+  ];
+
+  /* ================= STATE ================= */
+  var S = {
+    step: 0, lang: "bm", branch: null, branchLocked: false,
+    overall: 0, aspects: {}, nps: null, revisit: "",
+    attract: [], improve: [], photo: null,
+    age: "", firstVisit: "", freq: "", source: [],
+    visitType: "", companion: "",
+    phone: "", consent: false,
+    startedAt: 0,
+    sid: Math.random().toString(36).slice(2) + Date.now().toString(36),
+    result: null
+  };
+  var MODE = "demo";
+  var paramsReady = false;
+  var sending = false;
+  var autoTimer = 0;
+  var groups = [];
+
+  try {
+    if (window.google && google.script && google.script.run) MODE = "gas";
+    else if (ENDPOINT) MODE = "fetch";
+  } catch (e) { MODE = ENDPOINT ? "fetch" : "demo"; }
+
+  /* ================= HELPERS ================= */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function t() { return T[S.lang]; }
+  function fmt(s, o) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return o && o[k] != null ? o[k] : ""; }); }
+  function lab(it) { return S.lang === "en" ? (it.en || it.v) : (it.bm || it.v); }
+  function buzz() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} }
+  function reducedMotion() { try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } }
+  function findBranch(raw) {
+    var k = String(raw || "").toLowerCase().trim().replace(/[\s_]+/g, "-");
+    if (!k) return null;
+    for (var i = 0; i < BRANCHES.length; i++) {
+      if (BRANCHES[i].slug === k || BRANCHES[i].name.toLowerCase().replace(/\s+/g, "-") === k) return BRANCHES[i];
+    }
+    return null;
+  }
+  function phoneDigits(p) { return String(p || "").replace(/[\s\-().]/g, ""); }
+  function phoneOk(p) {
+    var d = phoneDigits(p);
+    if (!d) return true;
+    return /^(\+?60|0)[1-9]\d{7,9}$/.test(d) || /^\+[1-9]\d{7,14}$/.test(d);
+  }
+  function isMinor() { return S.age === "Bawah 18"; }
+  function isLow() {
+    if (S.overall && S.overall <= 2) return true;
+    if (S.revisit === "Tidak") return true;
+    return ASPECTS.some(function (a) { return S.aspects[a.key] && S.aspects[a.key] <= 2; });
+  }
+
+  /* ================= BUILD CONTROLS ================= */
+  function makeGroup(el, items, opts) {
+    var btns = items.map(function (it) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      if (!opts.multi) b.setAttribute("role", "radio");
+      b.innerHTML = TICK + '<span class="chip-t"></span>';
+      b.addEventListener("click", function () {
+        opts.set(it.v);
+        buzz();
+        sync();
+        if (opts.after) opts.after();
+        updateBar();
+      });
+      el.appendChild(b);
+      return { b: b, it: it };
+    });
+    el.setAttribute("role", opts.multi ? "group" : "radiogroup");
+    function sync() {
+      var cur = opts.get();
+      btns.forEach(function (x) {
+        var on = opts.multi ? cur.indexOf(x.it.v) >= 0 : cur === x.it.v;
+        x.b.setAttribute(opts.multi ? "aria-pressed" : "aria-checked", on ? "true" : "false");
+      });
+    }
+    function label() { btns.forEach(function (x) { x.b.querySelector(".chip-t").textContent = lab(x.it); }); }
+    label(); sync();
+    var g = { sync: sync, label: label };
+    groups.push(g);
+    return g;
+  }
+  function toggleIn(arr, v) { var i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); }
+
+  function buildFaces() {
+    var el = $("#faces");
+    for (var i = 1; i <= 5; i++) {
+      (function (v) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "face lv" + v;
+        b.setAttribute("role", "radio");
+        b.setAttribute("aria-checked", "false");
+        b.dataset.v = v;
+        b.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20.5"/>' + FACES[v - 1] + "</svg>";
+        b.addEventListener("click", function () { pickOverall(v); });
+        el.appendChild(b);
+      })(i);
+    }
+  }
+  function syncFaces() {
+    $$(".face").forEach(function (b, i) {
+      b.setAttribute("aria-checked", S.overall === i + 1 ? "true" : "false");
+      b.setAttribute("aria-label", t().faces[i]);
+    });
+    $("#faces").classList.toggle("has-pick", S.overall > 0);
+    var fl = $("#faceLabel");
+    fl.textContent = S.overall ? t().faces[S.overall - 1] : t().faceIdle;
+    fl.classList.toggle("on", S.overall > 0);
+  }
+  function pickOverall(v) {
+    S.overall = v;
+    buzz();
+    syncFaces();
+    updateBar();
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(function () { if (S.step === 1) next(); }, 560);
+  }
+
+  function buildAspects() {
+    var wrap = $("#aspects");
+    ASPECTS.forEach(function (a) {
+      var row = document.createElement("div");
+      row.className = "aspect";
+      row.setAttribute("role", "radiogroup");
+      row.setAttribute("aria-labelledby", "asp-" + a.key);
+      row.innerHTML = '<div class="aspect-text"><span class="aspect-name" id="asp-' + a.key + '"></span><span class="aspect-hint"></span></div><div class="stars"></div>';
+      var stars = $(".stars", row);
+      for (var v = 1; v <= 5; v++) {
+        (function (val) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "star";
+          b.setAttribute("role", "radio");
+          b.setAttribute("aria-checked", "false");
+          b.dataset.v = val;
+          b.innerHTML = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="' + STAR + '"/></svg>';
+          b.addEventListener("click", function () {
+            S.aspects[a.key] = val;
+            buzz();
+            syncAspect(a, val);
+            updateBar();
+          });
+          stars.appendChild(b);
+        })(v);
+      }
+      a.row = row;
+      wrap.appendChild(row);
+    });
+  }
+  function syncAspect(a, popVal) {
+    var cur = S.aspects[a.key] || 0;
+    $$(".star", a.row).forEach(function (b) {
+      var v = +b.dataset.v;
+      b.classList.toggle("on", v <= cur);
+      b.setAttribute("aria-checked", v === cur ? "true" : "false");
+      b.setAttribute("aria-label", fmt(t().starLabel, { v: v }));
+      if (popVal && v === popVal && !reducedMotion()) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); }
+    });
+  }
+  function labelAspects() {
+    ASPECTS.forEach(function (a) {
+      var txt = a[S.lang];
+      $(".aspect-name", a.row).textContent = txt[0];
+      $(".aspect-hint", a.row).textContent = txt[1];
+      syncAspect(a);
+    });
+  }
+
+  function npsLevel(v) { return v <= 3 ? "lv1" : v <= 6 ? "lv2" : v <= 8 ? "lv4" : "lv5"; }
+  function buildNps() {
+    var el = $("#nps");
+    for (var v = 0; v <= 10; v++) {
+      (function (val) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = npsLevel(val);
+        b.setAttribute("role", "radio");
+        b.setAttribute("aria-checked", "false");
+        b.textContent = val;
+        b.addEventListener("click", function () {
+          S.nps = val;
+          buzz();
+          syncNps();
+          updateBar();
+        });
+        el.appendChild(b);
+      })(v);
+    }
+  }
+  function syncNps() {
+    $$("#nps button").forEach(function (b, i) { b.setAttribute("aria-checked", S.nps === i ? "true" : "false"); });
+  }
+
+  function buildGroups() {
+    makeGroup($("#branchChips"), BRANCHES.map(function (b) { return { v: b.slug, bm: b.name, en: b.name }; }), {
+      get: function () { return S.branch ? S.branch.slug : ""; },
+      set: function (v) { S.branch = findBranch(v); },
+      after: updateWelcome
+    });
+    makeGroup($("#revisitChips"), REVISIT, { get: function () { return S.revisit; }, set: function (v) { S.revisit = v; } });
+    makeGroup($("#attractChips"), ATTRACT, {
+      multi: true,
+      get: function () { return S.attract; },
+      set: function (v) { toggleIn(S.attract, v); },
+      after: function () { $("#attractOtherRow").hidden = S.attract.indexOf("Lain-lain") < 0; }
+    });
+    makeGroup($("#improveChips"), IMPROVE, {
+      multi: true,
+      get: function () { return S.improve; },
+      set: function (v) {
+        if (v === NONE_IMPROVE) { S.improve = S.improve.indexOf(NONE_IMPROVE) >= 0 ? [] : [NONE_IMPROVE]; return; }
+        S.improve = S.improve.filter(function (x) { return x !== NONE_IMPROVE; });
+        toggleIn(S.improve, v);
+      }
+    });
+    makeGroup($("#ageChips"), AGE, { get: function () { return S.age; }, set: function (v) { S.age = v; } });
+    makeGroup($("#firstChips"), FIRST, {
+      get: function () { return S.firstVisit; },
+      set: function (v) { S.firstVisit = v; if (v !== "Tidak") { S.freq = ""; freqGroup.sync(); } },
+      after: syncAboutYou
+    });
+    var freqGroup = makeGroup($("#freqChips"), FREQ, { get: function () { return S.freq; }, set: function (v) { S.freq = v; } });
+    makeGroup($("#sourceChips"), SOURCE, { multi: true, get: function () { return S.source; }, set: function (v) { toggleIn(S.source, v); } });
+    makeGroup($("#visitChips"), VISIT, { get: function () { return S.visitType; }, set: function (v) { S.visitType = v; } });
+    makeGroup($("#companionChips"), COMPANION, { get: function () { return S.companion; }, set: function (v) { S.companion = S.companion === v ? "" : v; } });
+  }
+  function syncAboutYou() {
+    $("#freqGroup").hidden = S.firstVisit !== "Tidak";
+    $("#sourceLegend").textContent = S.firstVisit === "Ya" ? t().sourceReq : t().sourceOpt;
+  }
+
+  /* ================= PHOTO ================= */
+  function compressImage(file, maxDim, quality) {
+    return new Promise(function (resolve, reject) {
+      var url;
+      try { url = URL.createObjectURL(file); } catch (e) { reject(e); return; }
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var w = img.naturalWidth, h = img.naturalHeight;
+          if (!w || !h) throw new Error("empty");
+          var k = Math.min(1, maxDim / Math.max(w, h));
+          w = Math.round(w * k); h = Math.round(h * k);
+          var c = document.createElement("canvas");
+          c.width = w; c.height = h;
+          var ctx = c.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          resolve(c.toDataURL("image/jpeg", quality));
+        } catch (e) { URL.revokeObjectURL(url); reject(e); }
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("decode")); };
+      img.src = url;
+    });
+  }
+  function setPhoto(dataUrl, name) {
+    if (!dataUrl) {
+      S.photo = null;
+      $("#photoImg").removeAttribute("src");
+      $("#photoPreview").hidden = true;
+      $("#photoDrop").hidden = false;
+      return;
+    }
+    S.photo = { type: "image/jpeg", name: name || "gambar.jpg", data: dataUrl.split(",")[1] };
+    $("#photoImg").src = dataUrl;
+    $("#photoPreview").hidden = false;
+    $("#photoDrop").hidden = true;
+  }
+
+  /* ================= NAVIGATION ================= */
+  function updateProgress() {
+    var pct = S.step >= DONE ? 1 : Math.max(0, Math.min(1, S.step / TOTAL_Q));
+    $("#markFill").style.strokeDashoffset = String(100 - pct * 100);
+  }
+  function updateCounts() {
+    $$("[data-count]").forEach(function (el) {
+      var n = +el.closest(".step").id.slice(1);
+      el.textContent = fmt(t().count, { n: n });
+    });
+  }
+  function updateWelcome() {
+    $("#welcomeTitle").textContent = S.branch ? fmt(t().welcomeTitle, { b: S.branch.name }) : t().welcomeTitleNoBranch;
+    var showPick = paramsReady && !S.branchLocked;
+    $("#branchPick").hidden = !showPick;
+    $("#s0").classList.toggle("has-picker", showPick);
+    $("#brandBranch").hidden = !S.branch;
+    $("#brandBranchName").textContent = S.branch ? S.branch.name : "";
+  }
+  function prepStep5() {
+    var low = S.overall > 0 && S.overall <= 3;
+    $("#q5hint").textContent = low ? t().q5hintLow : t().q5hint;
+    $("#comment").placeholder = low ? t().commentPhImprove : t().commentPhLike;
+  }
+  function prepStep8() {
+    var minor = isMinor();
+    var low = isLow();
+    $("#contactFields").hidden = minor;
+    $("#q8title").textContent = minor ? t().q8minor : (low ? t().q8low : t().q8);
+    $("#q8lead").textContent = minor ? t().q8leadMinor : (low ? t().q8leadLow : t().q8lead);
+  }
+  function prepDone() {
+    var r = S.result || {};
+    var first = isMinor() ? "" : ($("#name").value.trim().split(/\s+/)[0] || "").slice(0, 30);
+    $("#doneTitle").textContent = first ? fmt(t().doneTitleName, { name: first }) : t().doneTitle;
+    var b = S.branch ? S.branch.name : "";
+    $("#doneLead").textContent = fmt(isLow() ? t().doneLeadLow : t().doneLead, { b: b });
+    var offer = r.offer ? (r.offer[S.lang] || r.offer.bm) : "";
+    if (r.code && offer) {
+      $("#ticketCode").textContent = r.code;
+      $("#ticketOffer").textContent = offer;
+      $("#ticket").hidden = false;
+    } else {
+      $("#ticket").hidden = true;
+    }
+    $("#demoDone").hidden = !r.demo;
+  }
+
+  function contactState() {
+    if (isMinor()) return { ok: true };
+    var ph = S.phone.trim();
+    var valid = phoneOk(ph);
+    return { ok: valid && (!ph || S.consent), needConsent: !!(ph && valid && !S.consent) };
+  }
+
+  function updateBar() {
+    var tt = t();
+    var nb = $("#nextBtn");
+    var ok = true;
+    var text = tt.next;
+    var need;
+    switch (S.step) {
+      case 0:
+        ok = !!S.branch;
+        text = ok ? tt.start : tt.startNeedBranch;
+        break;
+      case 1:
+        ok = S.overall > 0;
+        break;
+      case 2:
+        need = ASPECTS.filter(function (a) { return !S.aspects[a.key]; }).length;
+        ok = need === 0;
+        if (!ok) text = fmt(tt.remaining, { n: need });
+        break;
+      case 3:
+        need = (S.revisit ? 0 : 1) + (S.nps === null ? 1 : 0);
+        ok = need === 0;
+        if (!ok) text = fmt(tt.needAnswers, { n: need });
+        break;
+      case 4:
+        ok = S.attract.length > 0;
+        if (!ok) text = tt.needOne;
+        break;
+      case 5:
+        ok = S.improve.length > 0;
+        if (!ok) text = tt.needOne;
+        break;
+      case 6:
+        need = (S.age ? 0 : 1) + (S.firstVisit ? 0 : 1) +
+          (S.firstVisit === "Tidak" && !S.freq ? 1 : 0) +
+          (S.firstVisit === "Ya" && !S.source.length ? 1 : 0);
+        ok = need === 0;
+        if (!ok) text = fmt(tt.needAnswers, { n: need });
+        break;
+      case 7:
+        ok = !!S.visitType;
+        if (!ok) text = fmt(tt.needAnswers, { n: 1 });
+        break;
+      case 8:
+        var c = contactState();
+        ok = c.ok;
+        text = sending ? tt.sending : tt.send;
+        if (!sending && c.needConsent) text = tt.consentNeed;
+        break;
+    }
+    nb.disabled = !ok || sending;
+    $("#nextLabel").textContent = text;
+    $("#backBtn").hidden = S.step === 0 || S.step === DONE;
+    $("#backBtn").setAttribute("aria-label", tt.back);
+    $("#bar").hidden = S.step === DONE;
+  }
+
+  function goTo(n) {
+    if (n === S.step) return;
+    var dir = n > S.step ? "fwd" : "back";
+    var cur = $("#s" + S.step);
+    var nxt = $("#s" + n);
+    clearTimeout(autoTimer);
+    cur.hidden = true;
+    cur.classList.remove("enter-fwd", "enter-back");
+    S.step = n;
+    if (n === 5) prepStep5();
+    if (n === 6) syncAboutYou();
+    if (n === 8) prepStep8();
+    if (n === DONE) prepDone();
+    nxt.hidden = false;
+    nxt.classList.remove("enter-fwd", "enter-back");
+    void nxt.offsetWidth;
+    nxt.classList.add("enter-" + dir);
+    $("#main").scrollTop = 0;
+    updateProgress();
+    updateBar();
+    var h = $("h1, h2", nxt);
+    if (h) { h.setAttribute("tabindex", "-1"); try { h.focus({ preventScroll: true }); } catch (e) { h.focus(); } }
+  }
+  function next() {
+    if ($("#nextBtn").disabled) return;
+    if (S.step === 0) { if (!S.startedAt) S.startedAt = Date.now(); goTo(1); return; }
+    if (S.step < TOTAL_Q) { goTo(S.step + 1); return; }
+    if (S.step === TOTAL_Q) submit();
+  }
+  function back() { if (S.step > 0 && S.step < DONE && !sending) goTo(S.step - 1); }
+
+  /* ================= SUBMIT ================= */
+  function payload() {
+    var minor = isMinor();
+    var phone = minor ? "" : S.phone.trim();
+    return {
+      v: 2,
+      sid: S.sid,
+      lang: S.lang,
+      branch: S.branch ? S.branch.name : "",
+      overall: S.overall,
+      aspects: JSON.parse(JSON.stringify(S.aspects)),
+      nps: S.nps,
+      revisit: S.revisit,
+      attract: S.attract.slice(),
+      attractOther: S.attract.indexOf("Lain-lain") >= 0 ? $("#attractOther").value.trim() : "",
+      improve: S.improve.slice(),
+      comment: $("#comment").value.trim(),
+      photo: S.photo,
+      age: S.age,
+      firstVisit: S.firstVisit,
+      freq: S.firstVisit === "Tidak" ? S.freq : "",
+      source: S.source.slice(),
+      visitType: S.visitType,
+      companion: S.companion,
+      staff: $("#staff").value.trim(),
+      name: minor ? "" : $("#name").value.trim(),
+      phone: phone,
+      consent: !!(phone && S.consent),
+      durationSec: S.startedAt ? Math.round((Date.now() - S.startedAt) / 1000) : 0,
+      hp: $("#website").value
+    };
+  }
+  function demoCode() {
+    var A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", s = "";
+    for (var i = 0; i < 5; i++) s += A.charAt(Math.floor(Math.random() * A.length));
+    return "SFW-" + s;
+  }
+  function send(p) {
+    if (MODE === "gas") {
+      return new Promise(function (resolve, reject) {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).submitFeedback(p);
+      });
+    }
+    if (MODE === "fetch") {
+      return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(p) })
+        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+    }
+    return new Promise(function (resolve) {
+      setTimeout(function () {
+        resolve({
+          ok: true, demo: true,
+          status: isLow() ? "Perlu tindakan" : "OK",
+          code: demoCode(),
+          offer: { bm: "Contoh tawaran: minuman percuma pada kunjungan seterusnya.", en: "Example offer: a free drink on your next visit." }
+        });
+      }, 900);
+    });
+  }
+  function setBusy(on) {
+    sending = on;
+    $("#nextBtn").classList.toggle("busy", on);
+    updateBar();
+  }
+  function submit() {
+    if (sending) return;
+    $("#sendError").hidden = true;
+    setBusy(true);
+    send(payload()).then(function (r) {
+      if (!r || !r.ok) throw new Error((r && r.error) || "failed");
+      S.result = r;
+      setBusy(false);
+      goTo(DONE);
+      sparks();
+    }).catch(function () {
+      setBusy(false);
+      $("#sendError").textContent = t().sendError;
+      $("#sendError").hidden = false;
+    });
+  }
+
+  /* ================= CELEBRATION: rising embers ================= */
+  function sparks() {
+    if (reducedMotion()) return;
+    var c = $("#sparks");
+    var ctx = c.getContext ? c.getContext("2d") : null;
+    if (!ctx) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var W = window.innerWidth, H = window.innerHeight;
+    c.width = W * dpr; c.height = H * dpr;
+    c.style.width = W + "px"; c.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var r = $("#doneStar").getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var cs = getComputedStyle(document.documentElement);
+    var cols = ["--gold", "--orange", "--lv3"].map(function (k) { return cs.getPropertyValue(k).trim(); });
+    var P = [];
+    for (var i = 0; i < 48; i++) {
+      var a = Math.random() * Math.PI * 2, sp = 1.4 + Math.random() * 3.4;
+      P.push({ x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.4, r: 1 + Math.random() * 2.3, life: 1, decay: 0.011 + Math.random() * 0.016, c: cols[i % cols.length] });
+    }
+    (function frame() {
+      ctx.clearRect(0, 0, W, H);
+      var alive = 0;
+      P.forEach(function (p) {
+        if (p.life <= 0) return;
+        alive++;
+        p.x += p.vx; p.y += p.vy;
+        p.vy -= 0.035; p.vx *= 0.985;
+        p.life -= p.decay;
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.c;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      });
+      if (alive) requestAnimationFrame(frame); else ctx.clearRect(0, 0, W, H);
+    })();
+  }
+
+  /* ================= LANGUAGE ================= */
+  function applyLang() {
+    var tt = t();
+    document.documentElement.lang = S.lang === "en" ? "en" : "ms";
+    $$("[data-i18n]").forEach(function (el) { var v = tt[el.dataset.i18n]; if (typeof v === "string") el.textContent = v; });
+    $$("[data-i18n-ph]").forEach(function (el) { el.placeholder = tt[el.dataset.i18nPh] || ""; });
+    $("#langBm").setAttribute("aria-pressed", S.lang === "bm" ? "true" : "false");
+    $("#langEn").setAttribute("aria-pressed", S.lang === "en" ? "true" : "false");
+    $("#phoneError").textContent = tt.phoneError;
+    groups.forEach(function (g) { g.label(); });
+    labelAspects();
+    syncFaces();
+    $$("#nps button").forEach(function (b, i) { b.setAttribute("aria-label", i + " / 10"); });
+    updateWelcome();
+    updateCounts();
+    syncAboutYou();
+    prepStep5();
+    prepStep8();
+    if (S.step === DONE) prepDone();
+    if (!$("#sendError").hidden) $("#sendError").textContent = tt.sendError;
+    updateBar();
+  }
+
+  /* ================= INIT ================= */
+  function readParams(cb) {
+    if (MODE === "gas" && google.script.url && google.script.url.getLocation) {
+      try { google.script.url.getLocation(function (loc) { cb((loc && loc.parameter) || {}); }); return; } catch (e) {}
+    }
+    var p = {};
+    try { new URLSearchParams(window.location.search).forEach(function (v, k) { p[k] = v; }); } catch (e) {}
+    if (!p.c && window.location.hash.length > 1) { try { p.c = decodeURIComponent(window.location.hash.slice(1)); } catch (e) {} }
+    cb(p);
+  }
+
+  function bind() {
+    $("#app").addEventListener("submit", function (e) { e.preventDefault(); });
+    $("#nextBtn").addEventListener("click", next);
+    $("#backBtn").addEventListener("click", back);
+    $("#langBm").addEventListener("click", function () { if (S.lang !== "bm") { S.lang = "bm"; applyLang(); } });
+    $("#langEn").addEventListener("click", function () { if (S.lang !== "en") { S.lang = "en"; applyLang(); } });
+
+    $("#photoInput").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!f) return;
+      $("#photoError").hidden = true;
+      compressImage(f, 1600, 0.82).then(function (dataUrl) { setPhoto(dataUrl, f.name); }).catch(function () {
+        setPhoto(null);
+        $("#photoError").textContent = t().photoError;
+        $("#photoError").hidden = false;
+      });
+    });
+    $("#photoRemove").addEventListener("click", function () { setPhoto(null); });
+
+    $("#phone").addEventListener("input", function (e) {
+      S.phone = e.target.value;
+      $("#consentRow").hidden = !S.phone.trim();
+      if (phoneOk(S.phone.trim())) $("#phoneError").hidden = true;
+      updateBar();
+    });
+    $("#phone").addEventListener("blur", function () { $("#phoneError").hidden = phoneOk(S.phone.trim()); });
+    $("#consent").addEventListener("change", function (e) { S.consent = e.target.checked; updateBar(); });
+
+    $$(".js-privacy").forEach(function (b) {
+      b.addEventListener("click", function () { $("#privacy").hidden = false; $("#privacyClose").focus(); });
+    });
+    $("#privacyClose").addEventListener("click", closePrivacy);
+    $("#privacy").addEventListener("click", function (e) { if (e.target === e.currentTarget) closePrivacy(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("#privacy").hidden) closePrivacy(); });
+  }
+  function closePrivacy() { $("#privacy").hidden = true; }
+
+  function init() {
+    buildFaces();
+    buildAspects();
+    buildNps();
+    buildGroups();
+    bind();
+    $("#demoNote").hidden = MODE !== "demo";
+    applyLang();
+    updateProgress();
+    readParams(function (p) {
+      var b = findBranch(p.c || p.cawangan || p.branch);
+      if (b) { S.branch = b; S.branchLocked = true; }
+      if (String(p.lang || "").toLowerCase() === "en") S.lang = "en";
+      paramsReady = true;
+      groups.forEach(function (g) { g.sync(); });
+      applyLang();
+    });
+  }
+
+  init();
+})();
+</script>
