@@ -402,6 +402,30 @@ main::-webkit-scrollbar { display: none; }
 .btn-gold:active { transform: scale(.98); }
 .gift-note { margin: 0; font-size: var(--fs-sm); line-height: 1.5; color: var(--text-2); max-width: 36ch; }
 .gift-hint { margin: -6px 0 0; font-size: var(--fs-xs); color: var(--muted); }
+.gift-pill-body { min-width: 0; }
+.gift-pill-body p { margin: 0; }
+.gift-peek {
+  appearance: none; cursor: pointer; display: inline-flex; align-items: center; gap: 9px;
+  min-height: 40px; margin: 9px 0 2px; padding: 4px 12px 4px 5px;
+  border: 1px solid var(--gold-soft); border-radius: var(--r-pill); background: rgba(11, 11, 13, .42);
+  color: var(--gold); font: 600 var(--fs-sm)/1.2 var(--font-display); text-align: left;
+}
+.gift-peek:active { transform: scale(.98); }
+.gift-peek > svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.gp-imgs { display: inline-flex; flex: none; }
+.gp-imgs img { width: 30px; height: 30px; padding: 2px; border-radius: 50%; border: 1.5px solid rgba(255, 218, 124, .55); background: #2A1210; object-fit: contain; }
+.gp-imgs img + img { margin-left: -9px; }
+/* Senarai hadiah (modal) */
+.prize-card { max-width: 540px; }
+.prize-grid { list-style: none; margin: 2px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+.prize-grid li {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px 12px; text-align: center;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: radial-gradient(90% 65% at 50% 32%, rgba(255, 154, 6, .14), transparent 72%), var(--surface-2);
+}
+.prize-grid img, .prize-grid .gift-ic { width: 72px; height: 72px; object-fit: contain; }
+.prize-grid span { font-size: .75rem; line-height: 1.3; color: var(--text); overflow-wrap: anywhere; }
+.modal-card .prize-fine { font-size: var(--fs-xs); color: var(--muted); }
 
 /* ---------- Action bar ---------- */
 .bar { display: flex; gap: 10px; padding-block: 10px 16px; }
@@ -509,7 +533,7 @@ main::-webkit-scrollbar { display: none; }
         <span class="hero-ar" lang="ar" dir="rtl">أهلاً وسهلاً</span>
       </div>
       <h1 class="h-display" id="welcomeTitle">Kongsi pengalaman anda di Sofwah</h1>
-      <p class="gift-pill" id="welcomeGift" hidden><svg class="gift-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 11h15v8.5a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M3 7.5h18V11H3z"/><path d="M12 7.5v13"/><path d="M12 7.5C10.6 4.2 6.5 3.6 6.5 6c0 1.1 1.3 1.5 5.5 1.5z"/><path d="M12 7.5c1.4-3.3 5.5-3.9 5.5-1.5 0 1.1-1.3 1.5-5.5 1.5z"/></svg><span id="welcomeGiftT"></span></p>
+      <div class="gift-pill" id="welcomeGift" hidden><svg class="gift-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 11h15v8.5a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M3 7.5h18V11H3z"/><path d="M12 7.5v13"/><path d="M12 7.5C10.6 4.2 6.5 3.6 6.5 6c0 1.1 1.3 1.5 5.5 1.5z"/><path d="M12 7.5c1.4-3.3 5.5-3.9 5.5-1.5 0 1.1-1.3 1.5-5.5 1.5z"/></svg><div class="gift-pill-body"><p id="welcomeGiftT"></p><button type="button" class="gift-peek js-prizes" hidden><span class="gp-imgs" aria-hidden="true"></span><span class="gp-t"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></button></div></div>
       <p class="lead" data-i18n="welcomeLead"></p>
       <div class="branch-pick" id="branchPick" hidden>
         <p class="q-label" id="pickLabel" data-i18n="pickBranch"></p>
@@ -624,7 +648,7 @@ main::-webkit-scrollbar { display: none; }
       <div class="contact-fields" id="contactFields">
         <div class="gift-teaser" id="giftTeaser" hidden>
           <span class="gt-ic" aria-hidden="true"><svg class="gift-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 11h15v8.5a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M3 7.5h18V11H3z"/><path d="M12 7.5v13"/><path d="M12 7.5C10.6 4.2 6.5 3.6 6.5 6c0 1.1 1.3 1.5 5.5 1.5z"/><path d="M12 7.5c1.4-3.3 5.5-3.9 5.5-1.5 0 1.1-1.3 1.5-5.5 1.5z"/></svg></span>
-          <div><p class="gt-t" id="giftTeaserT"></p><p class="gt-s" id="giftTeaserS"></p><p class="gt-f" id="giftTeaserF"></p></div>
+          <div><p class="gt-t" id="giftTeaserT"></p><button type="button" class="gift-peek js-prizes" hidden><span class="gp-imgs" aria-hidden="true"></span><span class="gp-t"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></button><p class="gt-s" id="giftTeaserS"></p><p class="gt-f" id="giftTeaserF"></p></div>
         </div>
         <label class="field" for="name">
           <span class="field-label" data-i18n="nameLabel"></span>
@@ -708,6 +732,16 @@ main::-webkit-scrollbar { display: none; }
     <p id="privacyGift" hidden></p>
     <p data-i18n="privacy3"></p>
     <button type="button" class="btn-primary" id="privacyClose" data-i18n="close"></button>
+  </div>
+</div>
+
+<div class="modal" id="prizes" role="dialog" aria-modal="true" aria-labelledby="prizesTitle" hidden>
+  <div class="modal-card prize-card">
+    <h3 id="prizesTitle"></h3>
+    <p id="prizesLead"></p>
+    <ul class="prize-grid" id="prizeGrid"></ul>
+    <p class="prize-fine" id="prizesFine"></p>
+    <button type="button" class="btn-primary" id="prizesClose" data-i18n="close"></button>
   </div>
 </div>
 
@@ -835,7 +869,16 @@ main::-webkit-scrollbar { display: none; }
   ];
   var STAFF_OTHER = "__lain__";
   // Contoh tetapan cabutan untuk mod preview (borang dibuka tanpa Apps Script). Tetapan sebenar datang dari tab Tetapan.
-  var DEMO_GIFT = { on: true, odds: 20, bm: "Minuman percuma", en: "A free drink", valid: 30, once: 30 };
+  /* Gambar hadiah dihoskan bersama borang (maklumbalas.sofwah.my/hadiah/01.png …).
+     Senarai sebenar datang dari tab Senarai Hadiah; senarai ini hanya untuk mod pratonton. */
+  var GIFT_IMG = "https://maklumbalas.sofwah.my/hadiah/";
+  var DEMO_PRIZES = ["Free Iced Tea O", "Free Rose Syrup", "Free Mojito Verdant Kiwi", "Free Mojito Golden Peach", "Free Ice Cream",
+    "RM2 Voucher \u2014 min. spend RM30", "RM3 Voucher \u2014 min. spend RM40", "RM5 Voucher \u2014 min. spend RM50",
+    "RM10 Voucher \u2014 min. spend RM70", "RM50 Voucher \u2014 min. spend RM100", "Free Fries", "Free Nugget",
+    "Free Add-on Chicken (Size 1/8 pcs)", "Free Add-on Extra Rice", "Free Mushroom Soup", "Free Mini Chicken Chip",
+    "Free Chicken Wings", "Beef Daqooz", "Fries & Beef", "Free Crystal Garden"];
+  var DEMO_GIFT = { on: true, odds: 20, valid: 30, once: 30, bm: "hadiah", en: "a gift",
+    prizes: DEMO_PRIZES.map(function (n, i) { return { name: n, img: GIFT_IMG + (i < 9 ? "0" : "") + (i + 1) + ".png" }; }) };
 
   var T = {
     bm: {
@@ -891,19 +934,31 @@ main::-webkit-scrollbar { display: none; }
       soundOn: "Muzik dan bunyi: hidup. Ketik untuk senyapkan.",
       soundOff: "Muzik dan bunyi: senyap. Ketik untuk hidupkan.",
       giftPillB: "Peluang menang {gift}!",
+      giftPillMany: "Peluang menang hadiah!",
       giftPill: "Cabutan bertuah menanti di akhir borang.",
+      giftPeek: "Lihat {n} hadiah",
       giftTeaserT: "Peluang menang {gift}!",
+      giftTeaserMany: "Peluang menang hadiah!",
       giftTeaserS: "Isi nombor telefon dan tanda persetujuan untuk masuk cabutan. 1 dalam {odds} pelanggan menang, keputusan terus selepas hantar.",
+      giftTeaserSAll: "Isi nombor telefon dan tanda persetujuan untuk masuk cabutan. Setiap penyertaan menang satu hadiah, keputusan terus selepas hantar.",
       giftFineAge: "18 tahun ke atas",
       giftFineOnce: "1 cabutan setiap nombor dalam {days} hari",
       giftFineValid: "hadiah sah {days} hari",
       consentGift: "Saya bersetuju Sofwah menyimpan nombor ini untuk cabutan hadiah dan menghubungi saya tentang maklum balas ini.",
       q8leadGift: "Pilihan sahaja. Nombor telefon digunakan untuk cabutan hadiah dan untuk menghubungi anda tentang maklum balas ini.",
-      privacyGift: "Cabutan hadiah adalah percuma untuk pelanggan 18 tahun ke atas yang berkongsi nombor telefon. Pemenang dipilih secara rawak oleh sistem (peluang 1 dalam {odds}). Satu cabutan bagi setiap nombor dalam {once} hari. Hadiah perlu dituntut dalam {valid} hari dengan menunjukkan poster di kaunter Sofwah, dan tidak boleh ditukar kepada wang tunai.",
-      privacyGiftNoLimit: "Cabutan hadiah adalah percuma untuk pelanggan 18 tahun ke atas yang berkongsi nombor telefon. Pemenang dipilih secara rawak oleh sistem (peluang 1 dalam {odds}). Hadiah perlu dituntut dalam {valid} hari dengan menunjukkan poster di kaunter Sofwah, dan tidak boleh ditukar kepada wang tunai.",
+      privacyGiftA: "Cabutan hadiah adalah percuma untuk pelanggan 18 tahun ke atas yang berkongsi nombor telefon.",
+      privacyGiftOdds: "Pemenang dipilih secara rawak oleh sistem (peluang 1 dalam {odds}).",
+      privacyGiftAll: "Setiap penyertaan yang sah menang satu hadiah.",
+      privacyGiftPick: "Hadiah bagi setiap pemenang dipilih secara rawak oleh sistem daripada senarai hadiah; sesetengah hadiah lebih jarang.",
+      privacyGiftOnce: "Satu cabutan bagi setiap nombor dalam {once} hari.",
+      privacyGiftClaim: "Hadiah perlu dituntut dalam {valid} hari dengan menunjukkan poster di kaunter Sofwah, dan tidak boleh ditukar kepada wang tunai.",
+      prizesTitle: "Senarai hadiah",
+      prizesLead: "Setiap pemenang mendapat satu hadiah yang dipilih secara rawak oleh sistem.",
+      prizesFine: "Sesetengah hadiah lebih jarang daripada yang lain. Gambar sekadar hiasan.",
       giftOpenT: "Ketik untuk lihat keputusan cabutan",
       giftOpenS: "Peluang 1 dalam {odds} untuk menang {gift}",
       giftOpenSNoName: "Peluang 1 dalam {odds} untuk menang hadiah",
+      giftOpenSAll: "Satu hadiah sedang menanti anda",
       giftWonH: "Tahniah! Anda menang",
       giftWonHName: "Tahniah, {name}! Anda menang",
       giftWonNote: "Tunjukkan poster ini di kaunter Sofwah untuk menuntut hadiah, sebelum {until}.",
@@ -1012,19 +1067,31 @@ main::-webkit-scrollbar { display: none; }
       soundOn: "Music and sounds on. Tap to mute.",
       soundOff: "Music and sounds off. Tap to turn on.",
       giftPillB: "A chance to win {gift}!",
+      giftPillMany: "A chance to win a gift!",
       giftPill: "The lucky draw is waiting at the end of the form.",
+      giftPeek: "See all {n} gifts",
       giftTeaserT: "A chance to win {gift}!",
+      giftTeaserMany: "A chance to win a gift!",
       giftTeaserS: "Add your phone number and tick the consent box to enter the draw. 1 in {odds} customers win, and you'll see the result right after sending.",
+      giftTeaserSAll: "Add your phone number and tick the consent box to enter the draw. Every entry wins a gift, and you'll see it right after sending.",
       giftFineAge: "18 and above",
       giftFineOnce: "1 draw per number every {days} days",
       giftFineValid: "gift valid {days} days",
       consentGift: "I agree that Sofwah may keep this number for the gift draw and contact me about this feedback.",
       q8leadGift: "Optional. Your phone number is used for the gift draw and to contact you about this feedback.",
-      privacyGift: "The gift draw is free for customers aged 18 and above who share a phone number. Winners are picked at random by the system (a 1 in {odds} chance). One draw per number every {once} days. Gifts must be claimed within {valid} days by showing the poster at a Sofwah counter, and cannot be exchanged for cash.",
-      privacyGiftNoLimit: "The gift draw is free for customers aged 18 and above who share a phone number. Winners are picked at random by the system (a 1 in {odds} chance). Gifts must be claimed within {valid} days by showing the poster at a Sofwah counter, and cannot be exchanged for cash.",
+      privacyGiftA: "The gift draw is free for customers aged 18 and above who share a phone number.",
+      privacyGiftOdds: "Winners are picked at random by the system (a 1 in {odds} chance).",
+      privacyGiftAll: "Every valid entry wins a gift.",
+      privacyGiftPick: "Each winner's gift is picked at random by the system from the gift list; some gifts are rarer than others.",
+      privacyGiftOnce: "One draw per number every {once} days.",
+      privacyGiftClaim: "Gifts must be claimed within {valid} days by showing the poster at a Sofwah counter, and cannot be exchanged for cash.",
+      prizesTitle: "The gifts",
+      prizesLead: "Each winner gets one gift, picked at random by the system.",
+      prizesFine: "Some gifts are rarer than others. Pictures are for illustration only.",
       giftOpenT: "Tap to see your draw result",
       giftOpenS: "A 1 in {odds} chance to win {gift}",
       giftOpenSNoName: "A 1 in {odds} chance to win a gift",
+      giftOpenSAll: "A gift is waiting for you",
       giftWonH: "Congratulations! You won",
       giftWonHName: "Congratulations, {name}! You won",
       giftWonNote: "Show this poster at a Sofwah counter to claim your gift before {until}.",
@@ -1099,7 +1166,7 @@ main::-webkit-scrollbar { display: none; }
     visitType: "", companion: "",
     staffList: [], staff: "", staffRating: 0, staffTags: [],
     phone: "", consent: false,
-    gift: null, giftOpened: false, poster: null,
+    gift: null, giftOpened: false, poster: null, prizeImgP: null,
     startedAt: 0,
     sid: Math.random().toString(36).slice(2) + Date.now().toString(36),
     result: null
@@ -1345,7 +1412,7 @@ main::-webkit-scrollbar { display: none; }
     var done = function (list, gift) {
       if (!S.branch || S.branch.slug !== b.slug) return;
       S.staffList = (Array.isArray(list) ? list : []).filter(function (x) { return typeof x === "string" && x.trim(); }).slice(0, 40);
-      if (gift && typeof gift === "object") S.gift = gift.on && gift.bm ? gift : null;
+      if (gift && typeof gift === "object") S.gift = normGift(gift);
       renderStaff();
       renderGiftTeasers();
       if (S.step === 8) prepStep8();
@@ -1718,6 +1785,31 @@ main::-webkit-scrollbar { display: none; }
      The draw happens on the server (1 in N, one draw per phone per period); the form only shows the result.
      Winners get a poster drawn on a canvas (Sofwah dark + gold) that they can save and show at the counter. */
   function giftName(g) { return g ? (S.lang === "en" ? (g.en || g.bm) : g.bm) : ""; }
+  function safeImg(u) { return typeof u === "string" && u.length <= 300 && /^https:\/\/[^\s"'<>\\]+$/i.test(u) ? u : ""; }
+  /* Tetapan cabutan dari pelayan: { on, odds, valid, once, prizes: [{ name, img }] } (pelayan lama: bm/en sahaja). */
+  function normGift(g) {
+    if (!g || !g.on) return null;
+    var list = (Array.isArray(g.prizes) ? g.prizes : []).filter(function (p) {
+      return p && typeof p.name === "string" && p.name.trim();
+    }).slice(0, 50).map(function (p) { return { name: p.name.trim().slice(0, 60), img: safeImg(p.img) }; });
+    var bm = typeof g.bm === "string" ? g.bm : "", en = typeof g.en === "string" ? g.en : "";
+    if (!list.length && !bm) return null;
+    var num = function (v, d) { v = Number(v); return isFinite(v) && v >= 0 ? Math.round(v) : d; };
+    return { on: true, odds: Math.max(1, num(g.odds, 20)), valid: num(g.valid, 30), once: num(g.once, 0), bm: bm, en: en, prizes: list };
+  }
+  /* Nama hadiah untuk jemputan: satu hadiah = namanya; banyak hadiah = "hadiah" umum (tanpa bocor keputusan). */
+  function teaserName(g) {
+    if (!g) return "";
+    if (g.prizes.length > 1) return "";
+    return g.prizes.length === 1 ? g.prizes[0].name : giftName(g);
+  }
+  function smallImg(u) { return String(u).replace(/(\/hadiah\/\d+)\.png$/, "$1-s.png"); }
+  function prizeImgEl(u) {
+    var im = document.createElement("img");
+    im.crossOrigin = "anonymous"; im.alt = ""; im.decoding = "async";
+    im.src = u;
+    return im;
+  }
   function renderGiftTeasers() {
     var tt = t(), g = S.gift;
     var on = !!(g && g.on);
@@ -1725,19 +1817,69 @@ main::-webkit-scrollbar { display: none; }
     $("#giftTeaser").hidden = !on;
     $("#privacyGift").hidden = !on;
     $("#consentText").textContent = on ? tt.consentGift : tt.consent;
-    if (!on) return;
-    var nm = giftName(g);
+    renderPeek();
+    if (!on) { if (!$("#prizes").hidden) closePrizes(); return; }
+    var nm = teaserName(g), all = g.odds <= 1;
     $("#welcomeGiftT").innerHTML = "";
-    var b = document.createElement("b"); b.textContent = fmt(tt.giftPillB, { gift: nm });
+    var b = document.createElement("b"); b.textContent = nm ? fmt(tt.giftPillB, { gift: nm }) : tt.giftPillMany;
     $("#welcomeGiftT").appendChild(b);
     $("#welcomeGiftT").appendChild(document.createTextNode(" " + tt.giftPill));
-    $("#giftTeaserT").textContent = fmt(tt.giftTeaserT, { gift: nm });
-    $("#giftTeaserS").textContent = fmt(tt.giftTeaserS, { odds: g.odds });
+    $("#giftTeaserT").textContent = nm ? fmt(tt.giftTeaserT, { gift: nm }) : tt.giftTeaserMany;
+    $("#giftTeaserS").textContent = fmt(all ? tt.giftTeaserSAll : tt.giftTeaserS, { odds: g.odds });
     var fine = [tt.giftFineAge];
     if (g.once > 0) fine.push(fmt(tt.giftFineOnce, { days: g.once }));
     fine.push(fmt(tt.giftFineValid, { days: g.valid }));
     $("#giftTeaserF").textContent = fine.join(" · ");
-    $("#privacyGift").textContent = fmt(g.once > 0 ? tt.privacyGift : tt.privacyGiftNoLimit, { odds: g.odds, once: g.once, valid: g.valid });
+    var terms = [tt.privacyGiftA, all ? tt.privacyGiftAll : fmt(tt.privacyGiftOdds, { odds: g.odds })];
+    if (g.prizes.length > 1) terms.push(tt.privacyGiftPick);
+    if (g.once > 0) terms.push(fmt(tt.privacyGiftOnce, { once: g.once }));
+    terms.push(fmt(tt.privacyGiftClaim, { valid: g.valid }));
+    $("#privacyGift").textContent = terms.join(" ");
+    if (!$("#prizes").hidden) renderPrizeList();
+  }
+  /* "Lihat 20 hadiah": 4 gambar kecil dari seluruh senarai (bukan hanya yang pertama), buka senarai penuh. */
+  function renderPeek() {
+    var g = S.gift, list = g && g.on ? g.prizes : [], many = list.length > 1, tt = t();
+    var pics = list.filter(function (p) { return p.img; }), pick = [];
+    for (var i = 0; i < Math.min(4, pics.length); i++) pick.push(pics[Math.floor(i * pics.length / Math.min(4, pics.length))]);
+    var key = pick.map(function (p) { return p.img; }).join("|");
+    $$(".gift-peek").forEach(function (btn) {
+      btn.hidden = !many;
+      if (!many) return;
+      btn.querySelector(".gp-t").textContent = fmt(tt.giftPeek, { n: list.length });
+      var box = btn.querySelector(".gp-imgs");
+      if (box.getAttribute("data-key") === key) return;
+      box.setAttribute("data-key", key);
+      box.innerHTML = "";
+      pick.forEach(function (p) { box.appendChild(prizeImgEl(smallImg(p.img))); });
+    });
+  }
+  var prizesOpener = null;
+  function renderPrizeList() {
+    var tt = t(), g = S.gift, ul = $("#prizeGrid");
+    $("#prizesTitle").textContent = tt.prizesTitle;
+    $("#prizesLead").textContent = tt.prizesLead;
+    $("#prizesFine").textContent = tt.prizesFine;
+    ul.innerHTML = "";
+    (g ? g.prizes : []).forEach(function (p) {
+      var li = document.createElement("li");
+      li.appendChild(p.img ? prizeImgEl(smallImg(p.img)) : $("#welcomeGift .gift-ic").cloneNode(true));
+      var s = document.createElement("span"); s.textContent = p.name; li.appendChild(s);
+      ul.appendChild(li);
+    });
+  }
+  function openPrizes(e) {
+    if (!S.gift || S.gift.prizes.length < 2) return;
+    prizesOpener = e && e.currentTarget ? e.currentTarget : null;
+    renderPrizeList();
+    $("#prizes").hidden = false;
+    try { $("#prizesClose").focus({ preventScroll: true }); } catch (err) { $("#prizesClose").focus(); }
+    try { $("#prizeGrid").parentNode.scrollTop = 0; } catch (err) {}
+  }
+  function closePrizes() {
+    $("#prizes").hidden = true;
+    var o = prizesOpener; prizesOpener = null;
+    if (o && !o.hidden) { try { o.focus({ preventScroll: true }); } catch (e) {} }
   }
   function firstName() { return isMinor() ? "" : ($("#name").value.trim().split(/\s+/)[0] || "").slice(0, 16); }
   function prepGift() {
@@ -1749,9 +1891,9 @@ main::-webkit-scrollbar { display: none; }
     $("#giftOpen").hidden = S.giftOpened;
     $("#giftResult").hidden = !S.giftOpened;
     var odds = g.odds || (S.gift && S.gift.odds) || 20;
-    var nm = giftName(g.status === "won" ? g : S.gift);
+    var nm = teaserName(S.gift);   // bukan nama hadiah yang dimenangi: kotak belum dibuka
     $("#giftOpenT").textContent = tt.giftOpenT;
-    $("#giftOpenS").textContent = nm ? fmt(tt.giftOpenS, { odds: odds, gift: nm }) : fmt(tt.giftOpenSNoName, { odds: odds });
+    $("#giftOpenS").textContent = odds <= 1 ? tt.giftOpenSAll : nm ? fmt(tt.giftOpenS, { odds: odds, gift: nm }) : fmt(tt.giftOpenSNoName, { odds: odds });
     $("#giftOpen").setAttribute("aria-label", tt.giftOpenT);
     if (S.giftOpened) renderGiftResult();
   }
@@ -1870,7 +2012,61 @@ main::-webkit-scrollbar { display: none; }
     x.beginPath(); x.arc(0, -36, 8, 0, Math.PI * 2); x.fill();
     x.restore();
   }
-  function drawPoster(p) {
+  /* Gambar hadiah untuk poster: dimuat dengan CORS supaya kanvas boleh disimpan. Gagal/lambat → ikon kotak hadiah. */
+  var canDrawCache = null;
+  function canDraw() {
+    if (canDrawCache === null) {
+      try { var c = document.createElement("canvas"); canDrawCache = !!(c.getContext && c.getContext("2d")); } catch (e) { canDrawCache = false; }
+    }
+    return canDrawCache;
+  }
+  function loadImg(url) {
+    return new Promise(function (res) {
+      if (!url || !canDraw()) { res(null); return; }
+      var im = new Image(), done = false;
+      var fin = function (v) { if (!done) { done = true; res(v); } };
+      im.crossOrigin = "anonymous";
+      im.onload = function () { fin(im.naturalWidth ? im : null); };
+      im.onerror = function () { fin(null); };
+      setTimeout(function () { fin(null); }, 6000);
+      im.src = url;
+    });
+  }
+  /* Kotak bahagian gambar yang tidak lutsinar, supaya semua hadiah tampil sama besar pada poster. */
+  function trimBox(img) {
+    try {
+      var w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, 256 / Math.max(w, h));
+      var cw = Math.max(1, Math.round(w * k)), ch = Math.max(1, Math.round(h * k)), c = document.createElement("canvas");
+      c.width = cw; c.height = ch;
+      var g = c.getContext("2d"); g.drawImage(img, 0, 0, cw, ch);
+      var d = g.getImageData(0, 0, cw, ch).data, x0 = cw, y0 = ch, x1 = -1, y1 = -1;
+      for (var y = 0; y < ch; y++) for (var xx = 0; xx < cw; xx++) {
+        if (d[(y * cw + xx) * 4 + 3] > 16) { if (xx < x0) x0 = xx; if (xx > x1) x1 = xx; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      }
+      if (x1 < 0) return null;
+      return { x: Math.max(0, x0 / k - 2), y: Math.max(0, y0 / k - 2), w: Math.min(w, (x1 - x0 + 1) / k + 4), h: Math.min(h, (y1 - y0 + 1) / k + 4) };
+    } catch (e) { return null; }
+  }
+  function drawPrize(x, img, cx, cy, sz) {
+    x.save();
+    var glow = x.createRadialGradient(cx, cy, sz * 0.05, cx, cy, sz * 0.75);
+    glow.addColorStop(0, "rgba(255,218,124,0.30)"); glow.addColorStop(1, "rgba(255,218,124,0)");
+    x.fillStyle = glow; x.beginPath(); x.arc(cx, cy, sz * 0.75, 0, Math.PI * 2); x.fill();
+    if (img.sfwBox === undefined) img.sfwBox = trimBox(img);
+    var b = img.sfwBox || { x: 0, y: 0, w: img.naturalWidth || img.width, h: img.naturalHeight || img.height };
+    var r = Math.min(sz * 1.45 / b.w, sz / b.h), dw = b.w * r, dh = b.h * r;
+    x.drawImage(img, b.x, b.y, b.w, b.h, cx - dw / 2, cy - dh / 2, dw, dh);
+    x.restore();
+  }
+  /* "RM50 Voucher — min. spend RM100" → besar: RM50 VOUCHER, kecil: Min. spend RM100. "X (Size 1/8 pcs)" sama. */
+  function splitGiftName(nm) {
+    nm = String(nm || "").trim();
+    var m = nm.match(/^(.+?)\s+[\u2014\u2013-]\s+(.+)$/) || nm.match(/^(.+?)\s*\(([^()]+)\)$/);
+    if (!m) return { main: nm, sub: "" };
+    var sub = m[2].trim();
+    return { main: m[1].trim(), sub: sub.charAt(0).toUpperCase() + sub.slice(1) };
+  }
+  function drawPoster(p, img) {
     var W = 1080, H = 1350, cv = document.createElement("canvas");
     cv.width = W; cv.height = H;
     var x = null;
@@ -1903,26 +2099,41 @@ main::-webkit-scrollbar { display: none; }
     var hi = p.name ? fmt(tt.posterHiName, { name: p.name.toUpperCase() }) : tt.posterHi;
     var hs = fitOneLine(x, hi, 900, 60, 36, "700");
     x.font = "700 " + hs + "px Poppins"; x.fillStyle = "#FFFFFF"; x.fillText(hi, W / 2, 478, 920);
-    var gl = giftLines(x, p.gift.toUpperCase(), 920), two = gl.lines.length > 1;
-    drawGiftIcon(x, W / 2, two ? 566 : 582, two ? 0.82 : 1);
-    var wonY = two ? 672 : 702;
+    var parts = splitGiftName(p.gift);
+    var gl = giftLines(x, parts.main.toUpperCase(), 920), two = gl.lines.length > 1;
+    var linesH = gl.size * 0.92 + (gl.lines.length - 1) * gl.size * 1.06, tail = parts.sub ? 92 : 44;
+    var wonY, th = 170;
+    if (img) {
+      // gambar sebesar mungkin, tiket mesti berakhir sebelum jalur bawah (ty ≤ 910)
+      var isz = Math.round(Math.max(130, Math.min(230, 910 - 500 - (58 + linesH + tail))));
+      drawPrize(x, img, W / 2, 500 + isz / 2, isz);
+      wonY = 500 + isz + 40; th = 150;
+    } else {
+      drawGiftIcon(x, W / 2, two ? 566 : 582, two ? 0.82 : 1);
+      wonY = two ? 672 : 702;
+    }
     x.font = "500 36px Poppins"; x.fillStyle = "#D1D5DB"; x.fillText(tt.posterWon, W / 2, wonY);
     x.font = "700 " + gl.size + "px Poppins"; x.fillStyle = GOLD;
-    var gy = wonY + 18 + gl.size * 0.92;
+    var gy = wonY + 18 + gl.size * 0.92, lastY = gy + (gl.lines.length - 1) * gl.size * 1.06;
     gl.lines.forEach(function (ln, i) { x.fillText(ln, W / 2, gy + i * gl.size * 1.06, 940); });
-    var ty = Math.max(848, gy + (gl.lines.length - 1) * gl.size * 1.06 + 44);
+    if (parts.sub) {
+      x.font = "600 34px Poppins"; x.fillStyle = "#E5E7EB";
+      x.fillText(parts.sub, W / 2, lastY + 52, 900);
+      lastY += 52;
+    }
+    var ty = Math.max(img ? 0 : 848, lastY + (parts.sub ? 40 : 44)), k = th / 170;
     x.save();
-    var tg = x.createLinearGradient(160, ty, W - 160, ty + 170);
+    var tg = x.createLinearGradient(160, ty, W - 160, ty + th);
     tg.addColorStop(0, "#201D1C"); tg.addColorStop(1, "#151517");
-    rrect(x, 160, ty, W - 320, 170, 22); x.fillStyle = tg; x.fill();
+    rrect(x, 160, ty, W - 320, th, 22); x.fillStyle = tg; x.fill();
     x.setLineDash([14, 10]); x.lineWidth = 3; x.strokeStyle = "rgba(255,218,124,0.8)"; x.stroke(); x.setLineDash([]);
     x.fillStyle = "#0B0B0D";
-    [160, W - 160].forEach(function (nx) { x.beginPath(); x.arc(nx, ty + 85, 18, 0, Math.PI * 2); x.fill(); });
+    [160, W - 160].forEach(function (nx) { x.beginPath(); x.arc(nx, ty + th / 2, 18, 0, Math.PI * 2); x.fill(); });
     x.restore();
-    spacedText(x, tt.posterCodeLabel, W / 2, ty + 50, 6, "600 24px Poppins", GOLD);
-    spacedText(x, p.code, W / 2, ty + 136, 12, "700 78px Poppins", "#FFFFFF");
+    spacedText(x, tt.posterCodeLabel, W / 2, ty + Math.round(50 * k), 6, "600 24px Poppins", GOLD);
+    spacedText(x, p.code, W / 2, ty + Math.round(136 * k), 12, "700 " + (k < 1 ? 72 : 78) + "px Poppins", "#FFFFFF");
     x.font = "500 27px Poppins"; x.fillStyle = "#D1D5DB";
-    x.fillText(fmt(p.tail ? tt.posterDetails : tt.posterDetailsNoTel, { until: p.until, tail: p.tail }), W / 2, ty + 222, 960);
+    x.fillText(fmt(p.tail ? tt.posterDetails : tt.posterDetailsNoTel, { until: p.until, tail: p.tail }), W / 2, ty + th + 52, 960);
     var fy = H - 208;
     x.save(); rrect(x, 52, fy, W - 104, 156, 26); x.clip();
     x.fillStyle = "#730D04"; x.fillRect(52, fy, W - 104, 156);
@@ -1948,16 +2159,30 @@ main::-webkit-scrollbar { display: none; }
       tail: phoneDigits(S.phone).replace(/\D/g, "").slice(-4), demo: !!(S.result && S.result.demo)
     };
     var lang = S.lang, code = g.code;
-    fontsReady().then(function () {
-      var cv = drawPoster(info);
-      if (!cv) { $("#giftCodeBox").hidden = false; return; }
-      var done = function (blob) {
-        if (S.poster && S.poster.url && S.poster.url.indexOf("blob:") === 0) { try { URL.revokeObjectURL(S.poster.url); } catch (e) {} }
-        var url = blob ? URL.createObjectURL(blob) : cv.toDataURL("image/png");
-        S.poster = { lang: lang, code: code, blob: blob, url: url };
-        showPoster();
-      };
-      try { if (cv.toBlob) cv.toBlob(done, "image/png"); else done(null); } catch (e) { done(null); }
+    if (!canDraw()) { $("#giftCodeBox").hidden = false; return; }
+    if (!S.prizeImgP) S.prizeImgP = loadImg(safeImg(g.img));
+    Promise.all([fontsReady(), S.prizeImgP]).then(function (r) {
+      var img = r[1], cv = drawPoster(info, img);
+      if (!cv) return null;
+      return canvasUrl(cv).then(function (out) {
+        if (out || !img) return out;
+        var plain = drawPoster(info, null);   // kanvas tidak boleh disimpan dengan gambar: guna ikon kotak hadiah
+        return plain ? canvasUrl(plain) : null;
+      });
+    }).then(function (out) {
+      if (!out) { $("#giftCodeBox").hidden = false; return; }
+      if (S.poster && S.poster.url && S.poster.url.indexOf("blob:") === 0) { try { URL.revokeObjectURL(S.poster.url); } catch (e) {} }
+      S.poster = { lang: lang, code: code, blob: out.blob, url: out.url };
+      showPoster();
+    }).catch(function () { $("#giftCodeBox").hidden = false; });
+  }
+  function canvasUrl(cv) {
+    return new Promise(function (res) {
+      var viaData = function () { try { res({ blob: null, url: cv.toDataURL("image/png") }); } catch (e) { res(null); } };
+      try {
+        if (cv.toBlob) cv.toBlob(function (b) { if (b) res({ blob: b, url: URL.createObjectURL(b) }); else viaData(); }, "image/png");
+        else viaData();
+      } catch (e) { res(null); }
     });
   }
   function showPoster() {
@@ -2235,7 +2460,8 @@ main::-webkit-scrollbar { display: none; }
         };
         if (p.phone && p.consent) {
           var d = new Date(Date.now() + DEMO_GIFT.valid * 864e5), two = function (n) { return (n < 10 ? "0" : "") + n; };
-          res.gift = { status: "won", code: "HDH-" + demoCode().slice(4), bm: DEMO_GIFT.bm, en: DEMO_GIFT.en,
+          var pz = DEMO_GIFT.prizes[Math.floor(Math.random() * DEMO_GIFT.prizes.length)];
+          res.gift = { status: "won", code: "HDH-" + demoCode().slice(4), bm: pz.name, en: pz.name, img: pz.img,
             until: two(d.getDate()) + "/" + two(d.getMonth() + 1) + "/" + d.getFullYear(), valid: DEMO_GIFT.valid };
         }
         resolve(res);
@@ -2254,6 +2480,7 @@ main::-webkit-scrollbar { display: none; }
     send(payload()).then(function (r) {
       if (!r || !r.ok) throw new Error((r && r.error) || "failed");
       S.result = r;
+      S.prizeImgP = r.gift && r.gift.status === "won" ? loadImg(safeImg(r.gift.img)) : null;   // muat awal semasa kotak dibuka
       setBusy(false);
       goTo(DONE);
       sparks();
@@ -2382,7 +2609,14 @@ main::-webkit-scrollbar { display: none; }
     });
     $("#privacyClose").addEventListener("click", closePrivacy);
     $("#privacy").addEventListener("click", function (e) { if (e.target === e.currentTarget) closePrivacy(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("#privacy").hidden) closePrivacy(); });
+    $$(".js-prizes").forEach(function (b) { b.addEventListener("click", openPrizes); });
+    $("#prizesClose").addEventListener("click", closePrizes);
+    $("#prizes").addEventListener("click", function (e) { if (e.target === e.currentTarget) closePrizes(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (!$("#prizes").hidden) closePrizes();
+      else if (!$("#privacy").hidden) closePrivacy();
+    });
   }
   function closePrivacy() { $("#privacy").hidden = true; }
 
