@@ -1528,40 +1528,65 @@ main::-webkit-scrollbar { display: none; }
     syncStaffStars();
   }
 
-  /* ================= SOUND: calm Islamic-style music generated on the phone + answer chimes =================
-     Nothing is downloaded and nothing is copyrighted: the music is composed live with Web Audio in
-     maqam Bayati on D (with its quarter-tone E), as a slow ney-like melody over a soft humming drone.
-     No percussion and plenty of space. Starts only after the customer taps; one button mutes everything. */
-  var AU = { ctx: null, master: null, music: null, sfx: null, wet: null, verb: null, echo: null, noise: null, wave: null,
-             drone: null, on: true, timer: 0, nextT: 0, arc: [], fadeTimer: 0, offTimer: 0 };
+  /* ================= SOUND: upbeat jazz generated on the phone + answer chimes =================
+     Nothing is downloaded and nothing is copyrighted: an original, positive swing tune in F major is
+     composed live with Web Audio: walking bass, electric piano, brushes on the ride cymbal, and a
+     vibraphone melody that comes and goes. Starts only after the customer taps; one button mutes it all. */
+  var AU = { ctx: null, master: null, music: null, sfx: null, wet: null, verb: null, echo: null, noise: null, ep: null, vib: null,
+             on: true, timer: 0, nextT: 0, plan: [], forms: 0, fadeTimer: 0, offTimer: 0 };
   try { AU.on = localStorage.getItem("sfw_sound") !== "0"; } catch (e) {}
-  var ROOT_HZ = 146.83;                 // D3
-  var MUSIC_LEVEL = 0.36;               // soft background: about -25 dBFS RMS (measured in Chromium)
-  // Maqam Bayati on D: D, E half-flat (quarter tone), F, G, A, Bb, C, D. Degree 0 = D4; value = semitones above D4.
-  var BAYATI = { "-3": -5, "-2": -4, "-1": -2, "0": 0, "1": 1.5, "2": 3, "3": 5, "4": 7, "5": 8, "6": 10, "7": 12, "8": 13.5, "9": 15 };
-  // Hand-written phrases [degree, seconds] in the manner of a slow taqsim; the player varies them a little each time.
-  var PHRASES = {
-    open: [[0, 2.6], [1, 0.9], [2, 1.4], [1, 0.8], [0, 3.2]],
-    low:  [[-1, 1.0], [0, 1.5], [1, 0.9], [0, 0.9], [-2, 1.0], [0, 3.2]],
-    rise: [[2, 1.1], [3, 1.1], [4, 2.3], [3, 0.8], [2, 1.0], [1, 0.8], [2, 2.8]],
-    turn: [[2, 1.2], [1, 0.7], [2, 0.9], [3, 1.5], [2, 0.9], [1, 0.8], [0, 3.0]],
-    mid:  [[4, 1.7], [5, 0.9], [4, 0.9], [3, 1.0], [2, 1.1], [3, 3.0]],
-    sway: [[3, 1.4], [4, 1.0], [5, 1.0], [4, 1.2], [3, 0.9], [2, 2.8]],
-    peak: [[4, 1.0], [6, 1.5], [7, 2.6], [6, 0.8], [5, 0.9], [4, 2.8]],
-    high: [[7, 2.2], [6, 0.9], [5, 1.0], [4, 1.5], [3, 1.0], [4, 2.8]],
-    home: [[4, 1.3], [3, 0.9], [2, 1.0], [1, 0.9], [0, 3.6]]
-  };
-  function hz(semi) { return ROOT_HZ * Math.pow(2, semi / 12); }
-  function bay(deg) { return 12 + BAYATI[String(deg)]; }   // semitones above D3
+  var MUSIC_LEVEL = 0.36;               // soft background: about -25 dBFS RMS on a phone
+  var BPM = 108, BEAT = 60 / BPM, BAR = 4 * BEAT, SWING = 0.64;   // swung eighths: the "and" lands 64% into the beat
+  function mhz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
   function pickOne(a) { return a[Math.floor(Math.random() * a.length)]; }
-  function shuffled(a) {
-    a = a.slice();
-    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; }
-    return a;
-  }
-  // One arc = begin low, wander, climb to the peak, come home to D: the shape of a short taqsim.
-  function newArc() {
-    return [pickOne(["open", "low"])].concat(shuffled(["rise", "turn"]), shuffled(["mid", "sway"]), [pickOne(["peak", "high"]), "home"]);
+  function bt(p) { var b = Math.floor(p), f = p - b; return (b + (f >= 0.5 ? SWING : f)) * BEAT; }   // beat position → seconds
+  // Chords: bass root (MIDI), third (3 = minor, 4 = major) and a rootless electric-piano voicing (MIDI).
+  var CH = {
+    F:    { r: 41, t: 4, v: [57, 60, 64, 67] },   // Fmaj9
+    Dm:   { r: 38, t: 3, v: [53, 57, 60, 64] },   // Dm9
+    Am:   { r: 45, t: 3, v: [55, 60, 64, 71] },   // Am9
+    D9:   { r: 38, t: 4, v: [54, 60, 64, 69] },   // D9
+    D7b9: { r: 38, t: 4, v: [54, 60, 63, 69] },   // D7(b9)
+    Gm:   { r: 43, t: 3, v: [58, 62, 65, 69] },   // Gm9
+    C13:  { r: 36, t: 4, v: [58, 62, 64, 69] },   // C13
+    Bb:   { r: 46, t: 4, v: [57, 60, 62, 65] },   // Bbmaj9
+    Bbm6: { r: 46, t: 3, v: [61, 65, 67, 72] }    // Bbm6/9
+  };
+  var PROG_A = [["F"], ["Am", "D9"], ["Gm"], ["C13"], ["F"], ["Bb"], ["Am", "D7b9"], ["Gm", "C13"]];
+  var PROG_B = [["Bb"], ["Bbm6"], ["Am"], ["D9"], ["Gm"], ["C13"], ["F", "Dm"], ["Gm", "C13"]];
+  // Original vibraphone tune, bar by bar: [beat position (.5 = swung "and"), MIDI note, length in beats]
+  var MEL_A = [
+    [[0, 69, 1.5], [1.5, 72, 0.5], [2, 76, 1], [3, 74, 0.5], [3.5, 72, 0.5]],
+    [[0, 76, 1.5], [1.5, 74, 0.5], [2, 78, 1], [3, 76, 0.5], [3.5, 74, 0.5]],
+    [[0, 74, 1], [1, 77, 1], [2, 81, 1.5], [3.5, 79, 0.5]],
+    [[0, 76, 2.5]],
+    [[0.5, 72, 0.5], [1, 77, 1], [2, 81, 1], [3, 79, 0.5], [3.5, 77, 0.5]],
+    [[0, 74, 1.5], [1.5, 77, 0.5], [2, 81, 1.5], [3.5, 79, 0.5]],
+    [[0, 79, 1], [1, 76, 1], [2, 78, 0.5], [2.5, 81, 0.5], [3, 84, 1]],
+    [[0, 82, 1], [1, 81, 0.5], [1.5, 79, 0.5], [2, 76, 1], [3, 72, 1]]
+  ];
+  var MEL_B = [
+    [[0, 77, 1], [1, 81, 1], [2, 84, 2]],
+    [[0, 85, 1.5], [1.5, 84, 0.5], [2, 82, 1], [3, 79, 1]],
+    [[0, 84, 1.5], [1.5, 81, 0.5], [2, 79, 1], [3, 76, 1]],
+    [[0, 78, 1], [1, 81, 1], [2, 84, 1], [3, 86, 1]],
+    [[0, 82, 1.5], [1.5, 81, 0.5], [2, 77, 1], [3, 74, 1]],
+    [[0, 76, 1], [1, 79, 1], [2, 82, 1], [3, 81, 1]],
+    [[0, 81, 2], [2, 77, 1], [3, 74, 1]],
+    [[0, 79, 1], [1, 82, 0.5], [1.5, 81, 0.5], [2, 79, 1], [3, 76, 1]]
+  ];
+  // One chorus = A (tune) · A (piano takes over) · B (tune climbs) · A (tune); the very first time, two bars of groove lead in.
+  function buildForm() {
+    var bars = [];
+    var add = function (prog, mel, busy) { prog.forEach(function (ch, i) { bars.push({ ch: ch, mel: mel ? mel[i] : null, busy: busy, end: i === prog.length - 1 }); }); };
+    if (!AU.forms) bars.push({ ch: ["F"], mel: null, busy: false, end: false }, { ch: ["Gm", "C13"], mel: null, busy: false, end: true });
+    add(PROG_A, MEL_A, false);
+    add(PROG_A, Math.random() < 0.3 ? MEL_A : null, true);
+    add(PROG_B, MEL_B, false);
+    add(PROG_A, MEL_A, false);
+    AU.forms++;
+    bars.forEach(function (b, i) { b.next = bars[i + 1] ? bars[i + 1].ch[0] : "F"; });
+    return bars;
   }
   function audioReady() {
     if (AU.ctx) return true;
@@ -1577,34 +1602,44 @@ main::-webkit-scrollbar { display: none; }
         lim.threshold.value = -6; lim.knee.value = 4; lim.ratio.value = 12; lim.attack.value = 0.003; lim.release.value = 0.25;
         AU.master.connect(lim); lim.connect(c.destination);
       } else AU.master.connect(c.destination);
-      // a wide, soft hall
-      var len = Math.floor(c.sampleRate * 3.6), ir = c.createBuffer(2, len, c.sampleRate);
+      // a small, warm club room
+      var len = Math.floor(c.sampleRate * 1.7), ir = c.createBuffer(2, len, c.sampleRate);
       for (var ch = 0; ch < 2; ch++) {
         var d = ir.getChannelData(ch);
-        for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6);
+        for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2);
       }
       var conv = c.createConvolver(); conv.buffer = ir;
       AU.verb = c.createGain(); AU.verb.gain.value = 1;
       AU.verb.connect(conv); conv.connect(AU.master);
-      // music bus: everything musical (dry, echo and its reverb send) passes this one fader
+      // music bus: everything musical passes this one fader
       AU.music = c.createGain(); AU.music.gain.value = 0.0001; AU.music.connect(AU.master);
-      var send = c.createGain(); send.gain.value = 0.5;
+      var send = c.createGain(); send.gain.value = 0.22;
       AU.music.connect(send); send.connect(AU.verb);
-      AU.echo = c.createDelay(2); AU.echo.delayTime.value = 0.48;
-      var fb = c.createGain(); fb.gain.value = 0.3;
-      var lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2000;
-      var echoOut = c.createGain(); echoOut.gain.value = 0.45;
-      AU.echo.connect(lp); lp.connect(fb); fb.connect(AU.echo); lp.connect(echoOut); echoOut.connect(AU.music);
+      // electric piano bus with a gentle tremolo
+      var epTone = c.createBiquadFilter(); epTone.type = "lowpass"; epTone.frequency.value = 3400;
+      AU.ep = c.createGain(); AU.ep.gain.value = 0.9;
+      AU.ep.connect(epTone); epTone.connect(AU.music);
+      var trem = c.createOscillator(); trem.frequency.value = 4.3;
+      var tremD = c.createGain(); tremD.gain.value = 0.14;
+      trem.connect(tremD); tremD.connect(AU.ep.gain); trem.start(c.currentTime);
+      // vibraphone bus: motor vibrato + a soft echo
+      AU.vib = c.createGain(); AU.vib.gain.value = 0.85; AU.vib.connect(AU.music);
+      var motor = c.createOscillator(); motor.frequency.value = 5.6;
+      var motorD = c.createGain(); motorD.gain.value = 0.22;
+      motor.connect(motorD); motorD.connect(AU.vib.gain); motor.start(c.currentTime);
+      AU.echo = c.createDelay(1); AU.echo.delayTime.value = BEAT * 0.75;
+      var fb = c.createGain(); fb.gain.value = 0.22;
+      var elp = c.createBiquadFilter(); elp.type = "lowpass"; elp.frequency.value = 2400;
+      var echoOut = c.createGain(); echoOut.gain.value = 0.3;
+      AU.echo.connect(elp); elp.connect(fb); fb.connect(AU.echo); elp.connect(echoOut); echoOut.connect(AU.music);
+      var vSend = c.createGain(); vSend.gain.value = 0.5; AU.vib.connect(vSend); vSend.connect(AU.echo);
       // chimes: own bus + reverb send
       AU.sfx = c.createGain(); AU.sfx.gain.value = 1.4; AU.sfx.connect(AU.master);
-      AU.wet = c.createGain(); AU.wet.gain.value = 0.8; AU.wet.connect(AU.verb);
-      // breath noise for the ney, and a soft flute-like waveform
+      AU.wet = c.createGain(); AU.wet.gain.value = 0.7; AU.wet.connect(AU.verb);
+      // noise for the brushes and cymbals
       var nb = c.createBuffer(1, Math.floor(c.sampleRate * 2), c.sampleRate), nd = nb.getChannelData(0);
       for (var k = 0; k < nd.length; k++) nd[k] = Math.random() * 2 - 1;
       AU.noise = nb;
-      try {
-        if (c.createPeriodicWave) AU.wave = c.createPeriodicWave(new Float32Array([0, 0, 0, 0, 0, 0]), new Float32Array([0, 1, 0.28, 0.12, 0.05, 0.025]));
-      } catch (e) { AU.wave = null; }
       return true;
     } catch (e) { AU.ctx = null; return false; }
   }
@@ -1618,114 +1653,139 @@ main::-webkit-scrollbar { display: none; }
     o.connect(g); g.connect(dest);
     o.start(at); o.stop(at + dur + 0.05);
   }
-  function bell(f, at, peak) {
-    tone(AU.sfx, f, at, 0.9, peak, "sine", 0.004);
-    tone(AU.sfx, f * 2.76, at, 0.35, peak * 0.25, "sine", 0.004);
-    tone(AU.wet, f, at, 0.9, peak * 0.6, "sine", 0.004);
+  // Upright bass: plucked triangle with a little second harmonic so it carries on a phone speaker.
+  function bassNote(m, at, dur) {
+    var c = AU.ctx, f = mhz(m);
+    var o = c.createOscillator(), o2 = c.createOscillator(), g2 = c.createGain(), lp = c.createBiquadFilter(), g = c.createGain();
+    o.type = "triangle"; o2.type = "sine";
+    o.frequency.setValueAtTime(f, at); o2.frequency.setValueAtTime(f * 2, at);
+    g2.gain.value = 0.5;
+    lp.type = "lowpass"; lp.frequency.setValueAtTime(1100, at); lp.frequency.exponentialRampToValueAtTime(620, at + 0.22);
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(0.3, at + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.13, at + 0.2);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    o.connect(lp); o2.connect(g2); g2.connect(lp); lp.connect(g); g.connect(AU.music);
+    o.start(at); o2.start(at); o.stop(at + dur + 0.05); o2.stop(at + dur + 0.05);
   }
-  // Humming drone on D (D3, A3, D4) that slowly breathes; runs while the music is on.
-  function startDrone() {
-    if (AU.drone) return false;
-    var c = AU.ctx, now = c.currentTime;
-    var out = c.createGain(); out.gain.value = 0.0001;
-    var lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 640; lp.Q.value = 0.4;
-    var nasal = c.createBiquadFilter(); nasal.type = "peaking"; nasal.frequency.value = 310; nasal.Q.value = 1.1; nasal.gain.value = 5;
-    lp.connect(nasal); nasal.connect(out); out.connect(AU.music);
-    [[0, 0.55], [7, 0.3], [12, 0.18]].forEach(function (v, i) {
-      [-5, 5].forEach(function (cents, k) {
-        var o = c.createOscillator(); o.type = "sawtooth"; o.frequency.value = hz(v[0]); o.detune.value = cents;
-        var g = c.createGain(); g.gain.value = v[1] * 0.5;
-        var lfo = c.createOscillator(); lfo.frequency.value = 0.06 + i * 0.021 + k * 0.009;
-        var depth = c.createGain(); depth.gain.value = v[1] * 0.2;
-        lfo.connect(depth); depth.connect(g.gain);
-        o.connect(g); g.connect(lp);
-        o.start(now); lfo.start(now);
-      });
+  function near(m, to) { while (m - to > 6) m -= 12; while (to - m > 6) m += 12; return m; }
+  // Walking bass: root on beat 1, chord tones, then a step or half step into the next bar's root.
+  function walk(chs, t0, next) {
+    var a = chs[0], b = chs[1], notes = [a.r];
+    if (b) notes.push(a.r + pickOne([a.t, 7]), b.r);
+    else notes.push(a.r + pickOne([2, a.t]), a.r + pickOne([7, 9]));
+    var target = near(CH[next].r, notes[2]);
+    notes.push(target + pickOne([-1, 1, -2]));
+    notes.forEach(function (m, i) {
+      while (m > 55) m -= 12; while (m < 33) m += 12;
+      bassNote(m, t0 + i * BEAT, BEAT * 0.94);
     });
-    out.gain.setValueAtTime(0.0001, now);
-    out.gain.exponentialRampToValueAtTime(0.13, now + 4);
-    AU.drone = out;
-    return true;
   }
-  // One ney phrase: a single breathy voice that glides between notes, with delayed vibrato and grace notes.
-  function neyPhrase(name, at) {
-    var c = AU.ctx, src = PHRASES[name], k = 0.92 + Math.random() * 0.2, L = 0.15;
-    var notes = [], t = at;
-    src.forEach(function (n, i) {
-      var d = n[1] * k;
-      if (i > 0 && d > 1.3 && Math.random() < 0.35 && BAYATI[String(n[0] + 1)] != null) {
-        notes.push({ s: bay(n[0] + 1), t: t, d: 0.16, grace: true });
-        t += 0.16; d -= 0.16;
-      }
-      notes.push({ s: bay(n[0]), t: t, d: d });
-      t += d;
+  // Brushes on the ride ("ding, ding-ga-ding, ding-ga"), hi-hat on 2 and 4, a feathered kick, a brush flick at phrase ends.
+  function noiseHit(at, dur, peak, freq, type, q) {
+    var c = AU.ctx, s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+    s.buffer = AU.noise;
+    f.type = type || "bandpass"; f.frequency.value = freq; if (q) f.Q.value = q;
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(peak, at + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    s.connect(f); f.connect(g); g.connect(AU.music);
+    s.start(at, Math.random() * 1.5); s.stop(at + dur + 0.05);
+  }
+  function kick(at, peak) {
+    var c = AU.ctx, o = c.createOscillator(), g = c.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(120, at); o.frequency.exponentialRampToValueAtTime(52, at + 0.11);
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(peak, at + 0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + 0.24);
+    o.connect(g); g.connect(AU.music); o.start(at); o.stop(at + 0.28);
+  }
+  function drums(t0, end) {
+    [0, 1, 1.5, 2, 3, 3.5].forEach(function (p) {
+      var off = p % 1 > 0, accent = p === 1 || p === 3;
+      noiseHit(t0 + bt(p), off ? 0.16 : 0.42, (accent ? 0.11 : off ? 0.06 : 0.08) * (0.85 + Math.random() * 0.3), 6800, "bandpass", 0.7);
     });
-    var end = t;
-    var o = c.createOscillator();
-    if (AU.wave) o.setPeriodicWave(AU.wave); else o.type = "sine";
-    var env = c.createGain(); env.gain.value = 0.0001;
-    var soft = c.createBiquadFilter(); soft.type = "lowpass"; soft.frequency.value = 2600;
-    var vib = c.createOscillator(); vib.frequency.value = 4.6 + Math.random() * 0.8;
-    var vibD = c.createGain(); vibD.gain.value = 0;
-    vib.connect(vibD); vibD.connect(o.detune);
-    o.connect(env); env.connect(soft);
-    var nz = c.createBufferSource(); nz.buffer = AU.noise; nz.loop = true;
-    var bp = c.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 1700; bp.Q.value = 0.8;
-    var br = c.createGain(); br.gain.value = 0.0001;
-    nz.connect(bp); bp.connect(br); br.connect(soft);
-    soft.connect(AU.music);
-    var es = c.createGain(); es.gain.value = 0.35; soft.connect(es); es.connect(AU.echo);
-    o.frequency.setValueAtTime(hz(notes[0].s), at);
-    o.detune.setValueAtTime(-45, at);
-    o.detune.linearRampToValueAtTime(0, at + 0.22);          // slide up into the first note
-    env.gain.setValueAtTime(0.0001, at);
-    env.gain.exponentialRampToValueAtTime(L, at + 0.4);
-    br.gain.setValueAtTime(0.0001, at);
-    br.gain.exponentialRampToValueAtTime(L * 0.5, at + 0.06); // breath at the start of the phrase
-    br.gain.exponentialRampToValueAtTime(L * 0.09, at + 0.35);
-    notes.forEach(function (n, i) {
-      if (i > 0) {
-        o.frequency.setTargetAtTime(hz(n.s), n.t - 0.02, n.grace || notes[i - 1].grace ? 0.012 : 0.04);
-        env.gain.setTargetAtTime(L * 0.72, n.t - 0.05, 0.02);
-        env.gain.setTargetAtTime(L * (n.grace ? 0.9 : 1), n.t + 0.03, 0.06);
-      }
-      vibD.gain.setValueAtTime(0, n.t);
-      if (!n.grace && n.d > 0.8) {
-        vibD.gain.setValueAtTime(0, n.t + Math.min(0.45, n.d * 0.4));
-        vibD.gain.linearRampToValueAtTime(14 + Math.random() * 6, n.t + Math.min(1.1, n.d * 0.85));
-      }
-    });
-    var lastN = notes[notes.length - 1];
-    env.gain.setTargetAtTime(L * 1.05, lastN.t + 0.3, 0.4);
-    env.gain.setTargetAtTime(0.0001, end - 1.0, 0.35);
-    br.gain.setTargetAtTime(0.0001, end - 1.0, 0.3);
-    o.start(at); vib.start(at); nz.start(at, Math.random() * 1.5);
-    o.stop(end + 0.6); vib.stop(end + 0.6); nz.stop(end + 0.6);
-    return end;
+    [1, 3].forEach(function (p) { noiseHit(t0 + bt(p), 0.05, 0.06, 8500, "highpass"); });
+    kick(t0, 0.09); kick(t0 + bt(2), 0.06);
+    if (end) noiseHit(t0 + bt(3.5), 0.3, 0.08, 2400, "bandpass", 0.6);
+  }
+  // Electric piano (FM "tine" sound): one note.
+  function epNote(m, at, dur, vel) {
+    var c = AU.ctx, f = mhz(m);
+    var car = c.createOscillator(), mod = c.createOscillator(), mg = c.createGain(), g = c.createGain();
+    car.type = "sine"; mod.type = "sine";
+    car.frequency.setValueAtTime(f, at); mod.frequency.setValueAtTime(f, at);
+    mg.gain.setValueAtTime(f * 1.5, at);
+    mg.gain.exponentialRampToValueAtTime(f * 0.22, at + 0.45);
+    mod.connect(mg); mg.connect(car.frequency);
+    var pk = 0.05 * vel, hold = Math.max(0.05, Math.min(dur, 0.9));
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(pk, at + 0.006);
+    g.gain.exponentialRampToValueAtTime(pk * 0.35, at + hold);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + Math.max(dur, hold) + 0.25);
+    car.connect(g); g.connect(AU.ep);
+    car.start(at); mod.start(at);
+    car.stop(at + Math.max(dur, hold) + 0.3); mod.stop(at + Math.max(dur, hold) + 0.3);
+  }
+  function hit(ch, at, beats) {
+    var vel = 0.8 + Math.random() * 0.2;
+    ch.v.forEach(function (m, i) { epNote(m, at + i * 0.007, beats * BEAT, vel * (i === ch.v.length - 1 ? 1.1 : 1)); });
+  }
+  // Piano comping: a few swung rhythms; busier when the piano has the tune to itself.
+  function comp(chs, t0, busy) {
+    var pats;
+    if (chs.length === 2) {
+      pats = [[[0, 0, 1.6], [1, 2, 1.6]], [[0, 0, 0.8], [0, 1.5, 0.4], [1, 2, 1.5]], [[0, 0, 1.4], [1, 2.5, 1.2]]];
+    } else if (busy) {
+      pats = [[[0, 0, 0.8], [0, 1.5, 0.5], [0, 2.5, 1.2]], [[0, 0.5, 0.5], [0, 1.5, 0.5], [0, 3, 0.8]], [[0, 0, 1], [0, 1.5, 0.4], [0, 2, 0.4], [0, 3.5, 0.5]]];
+    } else {
+      pats = [[[0, 0, 3.2]], [[0, 0, 1.2], [0, 1.5, 2]], [[0, 0.5, 1], [0, 2.5, 1.2]]];
+    }
+    pickOne(pats).forEach(function (h) { hit(chs[h[0]], t0 + bt(h[1]), h[2]); });
+  }
+  // Vibraphone: bright bar tone with a short strike partial, ringing on through the motor vibrato.
+  function vibe(m, at, beats) {
+    var c = AU.ctx, f = mhz(m), len = Math.max(0.7, Math.min(2.4, beats * BEAT + 0.9));
+    var o = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain(), g2 = c.createGain();
+    o.type = "sine"; o2.type = "sine";
+    o.frequency.setValueAtTime(f, at); o2.frequency.setValueAtTime(f * 4, at);
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(0.11, at + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + len);
+    g2.gain.setValueAtTime(0.0001, at);
+    g2.gain.exponentialRampToValueAtTime(0.03, at + 0.003);
+    g2.gain.exponentialRampToValueAtTime(0.0001, at + 0.22);
+    o.connect(g); o2.connect(g2); g.connect(AU.vib); g2.connect(AU.vib);
+    o.start(at); o2.start(at); o.stop(at + len + 0.05); o2.stop(at + 0.27);
+  }
+  function playBar(b, t0) {
+    var chs = b.ch.map(function (k) { return CH[k]; });
+    walk(chs, t0, b.next);
+    drums(t0, b.end);
+    comp(chs, t0, b.busy);
+    if (b.mel) b.mel.forEach(function (n) { vibe(n[1], t0 + bt(n[0]), n[2]); });
   }
   function scheduleMusic() {
     var c = AU.ctx;
-    if (!c || AU.nextT > c.currentTime + 0.6) return;
-    if (AU.nextT < c.currentTime) AU.nextT = c.currentTime + 0.1;
-    if (!AU.arc.length) AU.arc = newArc();
-    var name = AU.arc.shift();
-    var end = neyPhrase(name, AU.nextT);
-    AU.nextT = end + (name === "home" ? 5.5 + Math.random() * 2.5 : 2.2 + Math.random() * 2.4);
+    if (!c || AU.nextT > c.currentTime + 0.7) return;
+    if (AU.nextT < c.currentTime) AU.nextT = c.currentTime + 0.05;
+    if (!AU.plan.length) AU.plan = buildForm();
+    playBar(AU.plan.shift(), AU.nextT);
+    AU.nextT += BAR;
   }
   function startMusic() {
     if (!AU.on || S.step === DONE || !audioReady()) return;
     var c = AU.ctx;
     clearTimeout(AU.offTimer);
     if (c.state === "suspended") { try { c.resume(); } catch (e) {} }
-    var fresh = startDrone();
     if (!AU.timer) {
-      AU.arc = newArc();
-      AU.nextT = c.currentTime + (fresh ? 1.6 : 0.3);   // first time: let the drone breathe in
+      AU.nextT = Math.max(AU.nextT, c.currentTime + 0.15);   // after a mute: carry on from the next bar, never twice at once
       AU.timer = setInterval(scheduleMusic, 200);
       scheduleMusic();
     }
     AU.music.gain.cancelScheduledValues(c.currentTime);
-    AU.music.gain.setTargetAtTime(MUSIC_LEVEL, c.currentTime, 1.4);
+    AU.music.gain.setTargetAtTime(MUSIC_LEVEL, c.currentTime, 0.9);
     $("#soundBtn").classList.add("live");
   }
   function stopMusic(fade) {
@@ -1737,22 +1797,28 @@ main::-webkit-scrollbar { display: none; }
     AU.timer = 0;
     $("#soundBtn").classList.remove("live");
   }
-  var SFX_DEG = [0, 2, 3, 4, 7];      // rating 1..5 → D F G A D (maqam Bayati): higher rating, higher note
+  // Answer chimes: vibraphone notes in F major, so they always sit inside the music.
+  function chime(m, at, peak) {
+    tone(AU.sfx, mhz(m), at, 0.9, peak, "sine", 0.004);
+    tone(AU.sfx, mhz(m) * 4, at, 0.2, peak * 0.22, "sine", 0.003);
+    tone(AU.wet, mhz(m), at, 0.9, peak * 0.5, "sine", 0.004);
+  }
+  var SFX_NOTES = [77, 79, 81, 84, 86];   // rating 1..5 → F G A C D: higher rating, higher note
   function sfx(kind, v) {
     if (!AU.on || !AU.ctx || AU.ctx.state !== "running") return;
     var at = AU.ctx.currentTime + 0.01;
     try {
-      if (kind === "tap") { tone(AU.sfx, 1174.66, at, 0.08, 0.05); tone(AU.sfx, 1760, at, 0.05, 0.015); }
-      else if (kind === "rate") bell(hz(bay(SFX_DEG[Math.max(0, Math.min(4, v - 1))]) + 12), at, 0.1);
-      else if (kind === "next") { bell(hz(bay(4) + 12), at, 0.06); bell(hz(bay(7) + 12), at + 0.1, 0.06); }
-      else if (kind === "back") { tone(AU.sfx, hz(bay(7)), at, 0.12, 0.045); tone(AU.sfx, hz(bay(4)), at + 0.07, 0.14, 0.04); }
-      else if (kind === "done") { [0, 2, 4, 7].forEach(function (d, i) { bell(hz(bay(d) + 12), at + i * 0.14, 0.09); }); }
-      else if (kind === "open") { [2, 3, 4, 5, 6, 7].forEach(function (d, i) { bell(hz(bay(d) + 12), at + i * 0.06, 0.035); }); }
+      if (kind === "tap") { tone(AU.sfx, 1396.91, at, 0.08, 0.05); tone(AU.sfx, 2093, at, 0.05, 0.015); }
+      else if (kind === "rate") chime(SFX_NOTES[Math.max(0, Math.min(4, v - 1))], at, 0.1);
+      else if (kind === "next") { chime(81, at, 0.06); chime(84, at + 0.1, 0.06); }
+      else if (kind === "back") { tone(AU.sfx, mhz(84), at, 0.12, 0.045); tone(AU.sfx, mhz(81), at + 0.07, 0.14, 0.04); }
+      else if (kind === "done") { [77, 81, 84, 88].forEach(function (m, i) { chime(m, at + i * 0.13, 0.09); }); }
+      else if (kind === "open") { [76, 77, 79, 81, 84, 86].forEach(function (m, i) { chime(m, at + i * 0.06, 0.035); }); }
       else if (kind === "win") {
-        [0, 2, 4, 7, 9].forEach(function (d, i) { bell(hz(bay(d) + 12), at + i * 0.12, 0.1); });
-        bell(hz(bay(7) + 24), at + 0.72, 0.06);
+        [77, 81, 84, 88, 89].forEach(function (m, i) { chime(m, at + i * 0.11, 0.1); });
+        chime(93, at + 0.66, 0.06);
       }
-      else if (kind === "lose") { bell(hz(bay(4) + 12), at, 0.06); bell(hz(bay(2) + 12), at + 0.24, 0.05); }
+      else if (kind === "lose") { chime(84, at, 0.06); chime(81, at + 0.24, 0.05); }
       else if (kind === "error") { tone(AU.sfx, 220, at, 0.14, 0.07, "triangle"); tone(AU.sfx, 196, at + 0.16, 0.18, 0.07, "triangle"); }
     } catch (e) {}
   }
